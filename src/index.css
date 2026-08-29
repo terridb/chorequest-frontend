@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Silkscreen:wght@400;700&display=swap');
+
+:root {
+    --font-pixel: 'Silkscreen', ui-monospace, monospace;
+    --font-ui: 'Instrument Sans', system-ui, sans-serif;
+
+    --ink: #171a1f; /* text, header, primary buttons */
+    --ink-muted: #7a838f; /* lines */
+    --ink-soft: #8792a0; /* captions */
+    --nav-inactive: #a4aeba;
+    --surface: #ffffff; /* cards, nav bar */
+    --bg: #eef1f4; /* screen background */
+    --bg-sunk: #f6f8fa; /* card footer rows */
+    --border: #dfe4ea; /* default card border + hard shadow */
+    --border-soft: #e7ecf1;
+    --checkbox-idle: #b3bcc7;
+
+    --blue: #2f5ecf; /* points, create button, active nav */
+    --blue-deep: #1e3f96; /* create button hard shadow */
+    --teal: #12a08a; /* score bar, cleared quests */
+    --teal-tint: #e9f5f2;
+    --teal-line: #bfe0d9;
+    --teal-text: #5d8378;
+    --red: #cf3350; /* late */
+    --red-tint: #fdf1f3;
+    --red-line: #f6d8de;
+
+    /* shape */
+    --r-card: 10px;
+    --r-chip: 6px;
+    --r-box: 3px; /* checkboxes */
+    --border-w: 2px;
+    --shadow-card: 0 3px 0 var(--border);
+    --shadow-card-late: 0 3px 0 var(--red);
+    --shadow-btn: 0 3px 0 var(--blue-deep);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
