@@ -5,6 +5,7 @@
     --font-ui: 'Instrument Sans', system-ui, sans-serif;
 
     --ink: #171a1f; /* text, header, primary buttons */
+    --ink-faded: #35373c; /* badge background */
     --ink-muted: #7a838f; /* lines */
     --ink-soft: #8792a0; /* captions */
     --nav-inactive: #a4aeba;
@@ -33,10 +34,42 @@
     --shadow-card: 0 3px 0 var(--border);
     --shadow-card-late: 0 3px 0 var(--red);
     --shadow-btn: 0 3px 0 var(--blue-deep);
+
+    /* spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-page: clamp(16px, 4vw, 32px);
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+.silkscreen-regular {
+    font-family: var(--font-pixel);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.silkscreen-bold {
+    font-family: var(--font-pixel);
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-pixel);
+    font-weight: 400;
+    font-style: normal;
+    color: var(--surface);
+}
+
+h1 {
+    font-size: 1.4rem;
 }
