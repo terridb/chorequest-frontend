@@ -1,0 +1,21 @@
+header {
+    background-color: var(--ink);
+    color: var(--surface);
+    font-family: var(--font-pixel);
+}
+
+.page-title-wrapper {
+     display: flex;
+     flex-direction: column;
+     margin-right: auto;
+ }
+
+.page-title-wrapper h1 span {
+    display: block;
+}
+
+p {
+    font-family: var(--font-ui);
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+}
