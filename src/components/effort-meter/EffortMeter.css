@@ -1,0 +1,15 @@
+.effort-meter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.effort-square {
+    width: 6px;
+    height: 6px;
+    background: var(--checkbox-idle);
+}
+
+.effort-square.filled {
+    background: var(--ink);
+}

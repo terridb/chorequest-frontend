@@ -1,0 +1,58 @@
+.quest-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface);
+    width: 100%;
+    color: var(--ink-soft);
+    border-radius: var(--r-card);
+    border: var(--border-w) solid var(--border);
+    box-shadow: var(--shadow-card);
+}
+
+.quest-card-header, .quest-card-body {
+    padding: var(--space-md);
+}
+
+.quest-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.checkbox {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--checkbox-idle);
+    border-radius: var(--r-box);
+}
+
+.quest-card-title {
+    flex: 1;
+}
+
+.points {
+    font-family: var(--font-pixel);
+    font-size: 1.2rem;
+    color: var(--blue);
+}
+
+.quest-card-body {
+    background-color: var(--bg-sunk);
+    font-weight: 500;
+    display: flex;
+    gap: var(--space-sm);
+    border-top: 1px solid var(--border);
+}
+
+.quest-title {
+    color: var(--ink);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.quest-details {
+    display: flex;
+    /*align-items: center;*/
+    gap: var(--space-sm);
+}

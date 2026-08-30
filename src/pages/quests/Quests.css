@@ -29,3 +29,10 @@
     bottom: calc(var(--nav-height) + var(--space-lg) * 2);
     z-index: 101;
 }
+
+.quests-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}

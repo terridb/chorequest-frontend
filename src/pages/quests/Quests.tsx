@@ -8,6 +8,7 @@ import Spinner from "../../components/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import AddButton from "../../components/add-button/AddButton.tsx";
 import type {Household} from "../../types/household.ts";
+import Card from "../../components/card/Card.tsx";
 
 
 function Quests() {
@@ -38,9 +39,18 @@ function Quests() {
                 <Scorebar title='House score'/>
                 <p>x blocks to go: GOAL</p>
             </Header>
-            <main className="quest-board-main">
+            <main className="quest-board-main outer-container">
                 {/*{showSpinner && <Spinner/>}*/}
-
+                {assignments &&
+                    <ul className='quests-list'>
+                        {assignments.map((assignment) =>
+                            <Card
+                                item={assignment}
+                                key={assignment.id}
+                            />
+                        )}
+                    </ul>
+                }
             </main>
 
             <AddButton/>

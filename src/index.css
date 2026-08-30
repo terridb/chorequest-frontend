@@ -47,6 +47,7 @@
 
 body {
     padding-bottom: var(--nav-height);
+    background-color: var(--bg);
 }
 
 * {
@@ -73,6 +74,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
     font-style: normal;
     color: var(--surface);
+}
+
+p {
+    font-family: var(--font-ui);
 }
 
 h1 {
