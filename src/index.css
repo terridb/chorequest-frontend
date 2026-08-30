@@ -30,7 +30,7 @@
     --r-card: 10px;
     --r-chip: 6px;
     --r-box: 3px; /* checkboxes */
-    --border-w: 2px;
+    --border-w: 1px;
     --shadow-card: 0 3px 0 var(--border);
     --shadow-card-late: 0 3px 0 var(--red);
     --shadow-btn: 0 3px 0 var(--blue-deep);
@@ -42,6 +42,11 @@
     --space-lg: 24px;
     --space-xl: 32px;
     --space-page: clamp(16px, 4vw, 32px);
+    --nav-height: 80px;
+}
+
+body {
+    padding-bottom: var(--nav-height);
 }
 
 * {
@@ -72,4 +77,8 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 1.4rem;
+}
+
+ul {
+    list-style: none;
 }

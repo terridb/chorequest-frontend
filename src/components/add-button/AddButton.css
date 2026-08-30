@@ -1,0 +1,23 @@
+.add-button {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--blue);
+    color: var(--surface);
+    border: none;
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-btn);
+    cursor: pointer;
+}
+
+.add-button:active {
+    box-shadow: none;
+    transform: translateY(3px);
+}
+
+.add-button-icon {
+    width: 28px;
+    height: 28px;
+}

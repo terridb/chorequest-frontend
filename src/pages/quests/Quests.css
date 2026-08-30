@@ -16,3 +16,16 @@
     gap: var(--space-sm);
 }
 
+.quest-board-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.add-button {
+    position: fixed;
+    right: var(--space-lg);
+    bottom: calc(var(--nav-height) + var(--space-lg) * 2);
+    z-index: 101;
+}
