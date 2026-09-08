@@ -7,6 +7,7 @@
     border-radius: var(--r-card);
     border: var(--border-w) solid var(--border);
     box-shadow: var(--shadow-card);
+    overflow: hidden;
 }
 
 .quest-card-header, .quest-card-body {
@@ -29,6 +30,9 @@
 
 .quest-card-title {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 .points {
@@ -53,6 +57,21 @@
 
 .quest-details {
     display: flex;
-    /*align-items: center;*/
     gap: var(--space-sm);
+}
+
+/*Late*/
+.quest-card--late {
+    border-color: var(--ink);
+    box-shadow: var(--shadow-card-late);
+}
+
+.quest-card--late .quest-card-body {
+    background-color: var(--red-tint);
+    border-color: var(--red-line);
+    color: var(--red);
+}
+
+.quest-card--late .checkbox {
+    border-color: var(--red);
 }

@@ -9,6 +9,9 @@ import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import AddButton from "../../components/add-button/AddButton.tsx";
 import type {Household} from "../../types/household.ts";
 import Card from "../../components/card/Card.tsx";
+import {useEffect, useState} from "react";
+import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/frequency.ts";
+import CardSection from "../../components/card-section/CardSection.tsx";
 
 
 function Quests() {
@@ -33,6 +36,22 @@ function Quests() {
     console.log('assignments: ', assignments)
     // console.log('household: ', household)
 
+    const filterLateAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
+        return assignments.filter(item => isDueDatePast(item.dueDate));
+    }
+
+    const filterTodayAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
+        return assignments.filter(item => isDueDateToday(item.dueDate));
+    }
+
+    const filterOtherAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
+        return assignments.filter(item => isDueDateFuture(item.dueDate));
+    }
+
+    const lateAssignments = assignments ? filterLateAssignments(assignments) : [];
+    const todayAssignments = assignments ? filterTodayAssignments(assignments) : [];
+    const otherAssignments = assignments ? filterOtherAssignments(assignments) : [];
+
     return (
         <>
             <Header title="Quest Board">
@@ -41,16 +60,27 @@ function Quests() {
             </Header>
             <main className="quest-board-main outer-container">
                 {/*{showSpinner && <Spinner/>}*/}
-                {assignments &&
-                    <ul className='quests-list'>
-                        {assignments.map((assignment) =>
-                            <Card
-                                item={assignment}
-                                key={assignment.id}
-                            />
-                        )}
-                    </ul>
+                {lateAssignments.length > 0 &&
+                    <CardSection
+                        assignments={lateAssignments}
+                        title='late'
+                    />
                 }
+                {todayAssignments.length > 0 &&
+                    <CardSection
+                        assignments={todayAssignments}
+                        title='today'
+                    />
+                }
+                {otherAssignments.length > 0 &&
+                    <CardSection
+                        assignments={otherAssignments}
+                        title='future'
+                    />
+                }
+                {otherAssignments.length <= 0 && lateAssignments.length <= 0 && todayAssignments.length <= 0 && (
+                    <p>No assignments added yet.</p>
+                )}
             </main>
 
             <AddButton/>

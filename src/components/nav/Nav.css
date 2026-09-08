@@ -7,7 +7,13 @@ nav {
     left: 0;
     right: 0;
     z-index: 100;
-    min-height: var(--nav-height);
+}
+
+nav.outer-container {
+    height: var(--nav-height);
+    padding-top: 0;
+    padding-bottom: 0;
+    justify-content: center;
 }
 
 .nav-items {

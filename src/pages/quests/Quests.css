@@ -21,6 +21,7 @@
     align-items: center;
     justify-content: center;
     min-height: 60vh;
+    gap: var(--space-xl);
 }
 
 .add-button {
@@ -30,9 +31,3 @@
     z-index: 101;
 }
 
-.quests-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}

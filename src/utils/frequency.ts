@@ -28,8 +28,16 @@ function startOfDay(date: Date): Date {
     return copy;
 }
 
+export function isDueDateToday(dueDate: string): boolean {
+    return startOfDay(new Date(dueDate)).getTime() === startOfDay(new Date()).getTime();
+}
+
 export function isDueDatePast(dueDate: string): boolean {
     return startOfDay(new Date(dueDate)).getTime() < startOfDay(new Date()).getTime();
+}
+
+export function isDueDateFuture(dueDate: string): boolean {
+    return startOfDay(new Date(dueDate)).getTime() > startOfDay(new Date()).getTime();
 }
 
 export function formatDueDate(dueDate: string): string {

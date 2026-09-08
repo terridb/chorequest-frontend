@@ -1,19 +1,20 @@
 import './Card.css'
 import type {TaskAssignment} from "../../types/task.ts";
-import {formatDueDate, formatFrequency} from "../../utils/frequency.ts";
+import {formatDueDate, formatFrequency, isDueDatePast} from "../../utils/frequency.ts";
 import EffortMeter from "../effort-meter/EffortMeter.tsx";
 
 function Card({item}: { item: TaskAssignment }) {
+    const isLate = item.dueDate ? isDueDatePast(item.dueDate) : false;
 
     return (
-        <li className='quest-card'>
+        <li className={`quest-card${isLate ? ' quest-card--late' : ''}`}>
             <div className='quest-card-header'>
                 <span className='checkbox'></span>
                 <div className='quest-card-title'>
                     <p className='quest-title'>{item.task.title}</p>
                     <div className='quest-details'>
                         <p>{formatFrequency(item.task.frequency)}</p>
-                        <span>-</span>
+                        <p>-</p>
                         <EffortMeter effort={item.task.effort}/>
                     </div>
                 </div>
@@ -23,8 +24,8 @@ function Card({item}: { item: TaskAssignment }) {
                 <p>{item.user.firstName}</p>
                 {item.dueDate &&
                     <>
-                        <span>-</span>
-                        <p>{formatDueDate(item.dueDate)}</p>
+                        <p>-</p>
+                        <p className={isLate ? 'due-date--late' : undefined}>{formatDueDate(item.dueDate)}</p>
                     </>
                 }
             </div>
