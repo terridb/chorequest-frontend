@@ -4,11 +4,12 @@ import Board from "./pages/board/Board.tsx";
 import Settings from "./pages/settings/Settings.tsx";
 import Lists from "./pages/lists/Lists.tsx";
 import Nav from "./components/nav/Nav.tsx";
+import RequireAuth from "./auth/RequireAuth.tsx";
 
 function App() {
 
     return (
-        <>
+        <RequireAuth>
             <Routes>
                 <Route path="/quests" element={<Quests/>}/>
                 <Route path="/leaderboard" element={<Board/>}/>
@@ -16,7 +17,7 @@ function App() {
                 <Route path="/lists" element={<Lists/>}/>
             </Routes>
             <Nav/>
-        </>
+        </RequireAuth>
     )
 }
 
