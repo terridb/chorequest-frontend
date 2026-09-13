@@ -1,0 +1,30 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-pixel);
+    font-size: 0.85rem;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--blue);
+    color: var(--surface);
+    border: none;
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-btn);
+    cursor: pointer;
+}
+
+.button:active {
+    box-shadow: none;
+    transform: translateY(3px);
+}
+
+.button--secondary {
+    background: var(--teal);
+    box-shadow: var(--shadow-btn-secondary);
+}
+
+.button-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
