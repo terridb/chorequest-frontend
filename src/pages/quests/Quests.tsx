@@ -8,10 +8,9 @@ import Spinner from "../../components/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import AddButton from "../../components/add-button/AddButton.tsx";
 import type {Household} from "../../types/household.ts";
-import Card from "../../components/card/Card.tsx";
-import {useEffect, useState} from "react";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/frequency.ts";
 import CardSection from "../../components/card-section/CardSection.tsx";
+import type {Goal} from "../../types/goal.ts";
 
 
 function Quests() {
@@ -23,18 +22,26 @@ function Quests() {
             apiClient.get<TaskAssignment[]>(`/api/households/${householdId}/assignments/open`).then(res => res.data)
     })
 
-    // const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useQuery({
-    //     queryKey: ["household", householdId],
-    //     queryFn: () =>
-    //         apiClient.get<Household>(`/api/households/${householdId}`).then(res => res.data)
-    // })
+    const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useQuery({
+        queryKey: ["household", householdId],
+        queryFn: () =>
+            apiClient.get<Household>(`/api/households/${householdId}`).then(res => res.data)
+    })
 
-    // const isLoading = isAssignmentsLoading || isHouseholdLoading;
-    // const isError = isAssignmentsError || isHouseholdError;
-    // const showSpinner = useDelayedLoading(isLoading);
+    const {data: goal, isLoading: isGoalLoading, isError: isGoalError} = useQuery({
+        queryKey: ["goal", householdId],
+        queryFn: () =>
+            apiClient.get<Goal>(`/api/households/${householdId}/goals/current`).then(res => res.data)
+    })
+
+    const isLoading = isAssignmentsLoading || isHouseholdLoading || isGoalLoading;
+    const isError = isAssignmentsError || isHouseholdError || isGoalError;
+    const showSpinner = useDelayedLoading(isLoading);
 
     console.log('assignments: ', assignments)
-    // console.log('household: ', household)
+    console.log('household: ', household)
+    console.log('goal: ', goal)
+
 
     const filterLateAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
         return assignments.filter(item => isDueDatePast(item.dueDate));
@@ -52,14 +59,25 @@ function Quests() {
     const todayAssignments = assignments ? filterTodayAssignments(assignments) : [];
     const otherAssignments = assignments ? filterOtherAssignments(assignments) : [];
 
+    const calculatePointsToGo = (goal: Goal): number => {
+        return goal.goalPoints - goal.currentPoints;
+    }
+
     return (
         <>
             <Header title="Quest Board">
-                <Scorebar title='House score'/>
-                <p>x blocks to go: GOAL</p>
+                {goal ?
+                    <>
+                        <Scorebar title='House score' goal={goal}/>
+                        <p>{calculatePointsToGo(goal)} points to go for {goal.title}</p>
+                    </> : <>
+                        <p>No goal found.</p>
+                    </>
+                }
+
             </Header>
             <main className="quest-board-main outer-container">
-                {/*{showSpinner && <Spinner/>}*/}
+                {showSpinner && <Spinner/>}
                 {lateAssignments.length > 0 &&
                     <CardSection
                         assignments={lateAssignments}
