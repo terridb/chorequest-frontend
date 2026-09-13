@@ -1,7 +1,34 @@
 import type {GoalStatus} from "./enums.ts";
-import type {HouseholdMember} from "./household.ts";
 
-export interface SimpleGoal {
+export interface HouseholdMemberSimple {
+    id: string;
+    user: {
+        id: string;
+        firstName: string;
+        avatarUrl: string | null;
+    };
+    points: number;
+}
+
+export interface GoalContribution {
+    id: string;
+    member: HouseholdMemberSimple;
+    rewardedPoints: number;
+}
+
+export interface Goal {
+    id: string;
+    householdId: string;
+    goalPoints: number;
+    title: string;
+    description: string | null;
+    completionDate: string | null;
+    currentPoints: number;
+    status: GoalStatus;
+    contributions: GoalContribution[];
+}
+
+export interface GoalSimple {
     id: string;
     householdId: string;
     goalPoints: number;
@@ -9,30 +36,13 @@ export interface SimpleGoal {
     status: GoalStatus;
 }
 
-export interface Goal extends SimpleGoal {
-    description: string;
-    completionDate: string;
-    currentPoints: number;
-    contributions: SimpleGoalContribution[];
-}
-
-export interface SimpleGoalContribution {
-    id: string;
-    member: HouseholdMember;
-    points: number;
-}
-
-export interface GoalContribution extends SimpleGoalContribution {
-    goal: SimpleGoal;
-}
-
-export interface GoalInput {
+export interface GoalRequest {
     goalPoints: number;
     title: string;
     description?: string;
 }
 
-export interface GoalPatchInput {
+export interface GoalPatch {
     goalPoints?: number;
     title?: string;
     description?: string;
