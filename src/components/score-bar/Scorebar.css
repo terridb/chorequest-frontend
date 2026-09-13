@@ -9,6 +9,7 @@
     flex-direction: row;
     align-items: center;
     gap: 3px;
+    width: 100%;
 }
 
 .score-bar-block {
