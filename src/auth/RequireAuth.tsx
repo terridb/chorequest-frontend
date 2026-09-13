@@ -3,6 +3,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import Spinner from "../components/spinner/Spinner.tsx";
 import useApiAuth from "./useApiAuth.ts";
 import useProvisionUser from "./useProvisionUser.ts";
+import "./RequireAuth.css";
 
 function RequireAuth({children}: { children: ReactNode }) {
     const {isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
@@ -19,7 +20,11 @@ function RequireAuth({children}: { children: ReactNode }) {
     }, [isLoading, isAuthenticated, loginWithRedirect]);
 
     if (!isAuthenticated) {
-        return <Spinner/>;
+        return (
+            <div className="auth-loading">
+                <Spinner/>
+            </div>
+        );
     }
 
     return <>{children}</>;
