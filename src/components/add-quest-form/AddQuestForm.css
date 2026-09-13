@@ -1,0 +1,75 @@
+.add-quest-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    font-family: var(--font-ui);
+}
+
+.add-quest-form h2 {
+    color: var(--ink);
+    font-size: 1.1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.field label {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    max-width: 100%;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--r-chip);
+    padding: var(--space-sm);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+}
+
+.field input:focus,
+.field textarea:focus {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+    border-color: var(--blue);
+}
+
+.field-checkbox label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.9rem;
+    color: var(--ink);
+}
+
+.field-checkbox input {
+    width: 16px;
+    height: 16px;
+}
+
+.field-error {
+    font-size: 0.75rem;
+    color: var(--red);
+}
+
+.form-error {
+    font-size: 0.85rem;
+    color: var(--red);
+}
+
+.submit-button {
+    justify-content: center;
+    width: 100%;
+}

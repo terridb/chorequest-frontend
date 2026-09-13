@@ -24,6 +24,10 @@
     gap: var(--space-xl);
 }
 
+.set-goal-button {
+    align-self: flex-start;
+}
+
 .add-button {
     position: fixed;
     right: var(--space-lg);

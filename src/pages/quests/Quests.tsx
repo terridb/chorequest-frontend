@@ -11,10 +11,16 @@ import type {Household} from "../../types/household.ts";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/frequency.ts";
 import CardSection from "../../components/card-section/CardSection.tsx";
 import type {Goal} from "../../types/goal.ts";
+import Button from "../../components/button/Button.tsx";
+import {PlusIcon} from "../../components/icons/NavIcons.tsx";
+import {useState} from "react";
+import Modal from "../../components/modal/Modal.tsx";
+import AddQuestForm from "../../components/add-quest-form/AddQuestForm.tsx";
 
 
 function Quests() {
     const householdId = '33333333-3333-3333-3333-333333333333';
+    const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
 
     const {data: assignments, isLoading: isAssignmentsLoading, isError: isAssignmentsError} = useQuery({
         queryKey: ["assignments", householdId],
@@ -63,6 +69,10 @@ function Quests() {
         return goal.goalPoints - goal.currentPoints;
     }
 
+    const handleSetGoal = () => {
+        // TODO: wire up goal creation flow
+    }
+
     return (
         <>
             <Header title="Quest Board">
@@ -71,7 +81,10 @@ function Quests() {
                         <Scorebar title='House score' goal={goal}/>
                         <p>{calculatePointsToGo(goal)} points to go for {goal.title}</p>
                     </> : <>
-                        <p>No goal found.</p>
+                        <Button onClick={handleSetGoal} variant="secondary" className="set-goal-button">
+                            <PlusIcon className="button-icon"/>
+                            Set a new goal
+                        </Button>
                     </>
                 }
 
@@ -101,7 +114,15 @@ function Quests() {
                 )}
             </main>
 
-            <AddButton/>
+            <AddButton onClick={() => setIsAddQuestOpen(true)}/>
+
+            <Modal open={isAddQuestOpen} onClose={() => setIsAddQuestOpen(false)}>
+                <AddQuestForm
+                    householdId={householdId}
+                    members={household?.members ?? []}
+                    onSuccess={() => setIsAddQuestOpen(false)}
+                />
+            </Modal>
         </>
     );
 }

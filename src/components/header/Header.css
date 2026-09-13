@@ -22,3 +22,7 @@ header p {
     color: var(--ink-muted);
     font-size: 0.8rem;
 }
+
+header .button {
+    margin: var(--space-md) 0;
+}

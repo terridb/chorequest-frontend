@@ -18,7 +18,8 @@
 
     --blue: #2f5ecf; /* points, create button, active nav */
     --blue-deep: #1e3f96; /* create button hard shadow */
-    --teal: #12a08a; /* score bar, cleared quests */
+    --teal: #12a08a; /* score bar, cleared quests, secondary button */
+    --teal-deep: #0c7a68; /* secondary button hard shadow */
     --teal-tint: #e9f5f2;
     --teal-line: #bfe0d9;
     --teal-text: #5d8378;
@@ -34,6 +35,7 @@
     --shadow-card: 0 3px 0 var(--border);
     --shadow-card-late: 0 3px 0 var(--red);
     --shadow-btn: 0 3px 0 var(--blue-deep);
+    --shadow-btn-secondary: 0 3px 0 var(--teal-deep);
 
     /* spacing */
     --space-xs: 4px;
