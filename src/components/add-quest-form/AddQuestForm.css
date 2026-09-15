@@ -1,75 +1,65 @@
 .add-quest-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-    font-family: var(--font-ui);
+    gap: var(--space-page);
 }
 
-.add-quest-form h2 {
-    color: var(--ink);
-    font-size: 1.1rem;
-}
-
-.field {
+.form-label {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
+    font-family: var(--font-pixel);
+    color: var(--ink-muted);
+    font-size: 0.8rem;
 }
 
-.field label {
-    font-size: 0.8rem;
+.add-quest-form input,
+.add-quest-form textarea {
+    width: 100%;
+    border-radius: var(--r-card);
+    border: var(--border-w) solid var(--border);
+    padding: var(--space-md);
+    font-family: var(--font-ui);
     color: var(--ink-soft);
 }
 
-.field input,
-.field textarea {
-    width: 100%;
-    max-width: 100%;
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    color: var(--ink);
-    background: var(--surface);
+.repeats-container {
+    background-color: var(--surface);
+    border-radius: var(--r-card);
     border: var(--border-w) solid var(--border);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.segmented-control-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.form-button {
+    background-color: transparent;
+    color: var(--ink-muted);
     border-radius: var(--r-chip);
-    padding: var(--space-sm);
-}
-
-.field textarea {
-    resize: vertical;
-    min-height: 4.5rem;
-}
-
-.field input:focus,
-.field textarea:focus {
-    outline: 2px solid var(--blue);
-    outline-offset: 1px;
-    border-color: var(--blue);
-}
-
-.field-checkbox label {
+    padding: var(--space-md);
+    aspect-ratio: 1 / 1;
+    border: var(--border-w) solid var(--border);
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
-    font-size: 0.9rem;
-    color: var(--ink);
-}
-
-.field-checkbox input {
-    width: 16px;
-    height: 16px;
-}
-
-.field-error {
-    font-size: 0.75rem;
-    color: var(--red);
-}
-
-.form-error {
-    font-size: 0.85rem;
-    color: var(--red);
-}
-
-.submit-button {
     justify-content: center;
-    width: 100%;
+}
+
+.repeats-times-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.form-button.active {
+    background-color: var(--ink);
+    color: var(--surface);
 }

@@ -6,7 +6,6 @@ import {apiClient} from "../../api/client.ts";
 import type {TaskAssignment} from "../../types/task.ts";
 import Spinner from "../../components/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
-import AddButton from "../../components/add-button/AddButton.tsx";
 import type {Household} from "../../types/household.ts";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/frequency.ts";
 import CardSection from "../../components/card-section/CardSection.tsx";
@@ -14,12 +13,12 @@ import type {Goal} from "../../types/goal.ts";
 import Button from "../../components/button/Button.tsx";
 import {PlusIcon} from "../../components/icons/NavIcons.tsx";
 import {useState} from "react";
-import Modal from "../../components/modal/Modal.tsx";
+import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
 import AddQuestForm from "../../components/add-quest-form/AddQuestForm.tsx";
-
 
 function Quests() {
     const householdId = '33333333-3333-3333-3333-333333333333';
+
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
 
     const {data: assignments, isLoading: isAssignmentsLoading, isError: isAssignmentsError} = useQuery({
@@ -91,38 +90,41 @@ function Quests() {
             </Header>
             <main className="quest-board-main outer-container">
                 {showSpinner && <Spinner/>}
-                {lateAssignments.length > 0 &&
+                {isError && !isLoading &&
+                    <p>Something went wrong loading your quests. Please try refreshing the page.</p>
+                }
+                {!isError && lateAssignments.length > 0 &&
                     <CardSection
                         assignments={lateAssignments}
                         title='late'
                     />
                 }
-                {todayAssignments.length > 0 &&
+                {!isError && todayAssignments.length > 0 &&
                     <CardSection
                         assignments={todayAssignments}
                         title='today'
                     />
                 }
-                {otherAssignments.length > 0 &&
+                {!isError && otherAssignments.length > 0 &&
                     <CardSection
                         assignments={otherAssignments}
                         title='future'
                     />
                 }
-                {otherAssignments.length <= 0 && lateAssignments.length <= 0 && todayAssignments.length <= 0 && (
+                {!isError && otherAssignments.length <= 0 && lateAssignments.length <= 0 && todayAssignments.length <= 0 && (
                     <p>No assignments added yet.</p>
                 )}
             </main>
-
-            <AddButton onClick={() => setIsAddQuestOpen(true)}/>
-
-            <Modal open={isAddQuestOpen} onClose={() => setIsAddQuestOpen(false)}>
-                <AddQuestForm
-                    householdId={householdId}
-                    members={household?.members ?? []}
-                    onSuccess={() => setIsAddQuestOpen(false)}
-                />
-            </Modal>
+            <BottomSheet
+                open={isAddQuestOpen}
+                onClose={() => setIsAddQuestOpen(false)}
+                title='New Quest'
+            >
+                <AddQuestForm/>
+            </BottomSheet>
+            <Button className="add-button" onClick={() => setIsAddQuestOpen(true)}>
+                <PlusIcon className="add-button-icon"/>
+            </Button>
         </>
     );
 }

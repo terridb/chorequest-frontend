@@ -89,3 +89,7 @@ h1 {
 ul {
     list-style: none;
 }
+
+fieldset {
+    border: none;
+}
