@@ -1,0 +1,40 @@
+.bottom-sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in srgb, var(--ink) 60%, transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 200;
+}
+
+.bottom-sheet-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    padding: var(--space-page);
+    border-radius: var(--r-card) var(--r-card) 0 0;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.bottom-sheet-title {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-page);
+}
+
+.bottom-sheet-title h3 {
+    grid-column: 2;
+    justify-self: center;
+    color: var(--ink);
+}
+
+.bottom-sheet-content {
+    padding-top: var(--space-page);
+}

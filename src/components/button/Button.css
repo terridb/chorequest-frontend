@@ -23,6 +23,20 @@
     box-shadow: var(--shadow-btn-secondary);
 }
 
+.button--ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    box-shadow: none;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: normal;
+    padding: 0;
+}
+
+.button--ghost:active {
+    transform: none;
+}
+
 .button-icon {
     width: 16px;
     height: 16px;
