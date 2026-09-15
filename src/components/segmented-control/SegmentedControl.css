@@ -1,0 +1,42 @@
+.segmented-control {
+    display: flex;
+    row-gap: var(--space-md);
+    column-gap: var(--space-sm);
+    background-color: var(--surface);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--r-card);
+    margin: 0;
+    padding: var(--space-xs);
+    min-width: 0;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.segmented-control-option {
+    background-color: transparent;
+    border: none;
+    color: var(--ink);
+    padding: var(--space-sm);
+    width: 100%;
+}
+
+.segmented-control-option.active {
+    background-color: var(--ink);
+    color: var(--surface);
+    border-radius: var(--r-box);
+}
+
+.segmented-control--inverted {
+    background-color: var(--bg-sunk);
+    color: var(--ink-muted);
+    border: none;
+}
+
+.segmented-control--inverted .segmented-control-option {
+    color: var(--ink-muted);
+}
+
+.segmented-control--inverted .segmented-control-option.active {
+    background-color: var(--surface);
+    color: var(--ink);
+}
