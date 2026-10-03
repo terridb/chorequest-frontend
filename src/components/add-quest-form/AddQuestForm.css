@@ -49,3 +49,17 @@
 .add-quest-form-footer .button {
     width: 100%;
 }
+.form-error {
+    font-family: var(--font-ui);
+    color: var(--red);
+    font-size: 0.8rem;
+}
+
+.add-quest-form input[aria-invalid='true'],
+.add-quest-form textarea[aria-invalid='true'] {
+    border-color: var(--red);
+}
+
+.add-quest-form-footer .button:disabled .add-quest-form-points {
+    opacity: 0.6;
+}
