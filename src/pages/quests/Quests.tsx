@@ -7,7 +7,7 @@ import type {TaskAssignment} from "../../types/task.ts";
 import Spinner from "../../components/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import type {Household} from "../../types/household.ts";
-import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/frequency.ts";
+import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/date.ts";
 import CardSection from "../../components/card-section/CardSection.tsx";
 import type {Goal} from "../../types/goal.ts";
 import Button from "../../components/button/Button.tsx";

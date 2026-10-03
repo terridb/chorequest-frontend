@@ -1,6 +1,7 @@
 import './Card.css'
 import type {TaskAssignment} from "../../types/task.ts";
-import {formatDueDate, formatFrequency, isDueDatePast} from "../../utils/frequency.ts";
+import {formatFrequency} from "../../utils/frequency.ts";
+import {formatDueDate, isDueDatePast} from "../../utils/date.ts";
 import EffortMeter from "../effort-meter/EffortMeter.tsx";
 
 function Card({item}: { item: TaskAssignment }) {
