@@ -1,0 +1,14 @@
+input[type='date'].date-input {
+    width: auto;
+    border-radius: var(--r-card);
+    border: var(--border-w) solid var(--border);
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-ui);
+    color: var(--ink);
+    background: var(--surface);
+    outline: none;
+}
+
+input[type='date'].date-input:focus {
+    outline: solid 1px var(--ink);
+}
