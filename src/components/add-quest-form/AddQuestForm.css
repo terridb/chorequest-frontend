@@ -21,6 +21,12 @@
     padding: var(--space-md);
     font-family: var(--font-ui);
     color: var(--ink-soft);
+    outline: none;
+}
+
+.add-quest-form input:focus,
+.add-quest-form textarea:focus {
+    outline: solid 1px var(--ink);
 }
 
 .repeats-container {
@@ -62,4 +68,16 @@
 .form-button.active {
     background-color: var(--ink);
     color: var(--surface);
+}
+
+.form-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-label-hint {
+    font-family: var(--font-ui);
+    color: var(--ink-soft);
+    font-size: 0.8rem;
 }

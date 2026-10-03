@@ -47,3 +47,7 @@ export interface TaskCompletionInput {
     completedByMemberId: string;
 }
 
+export interface EffortDetail {
+    effort: Effort;
+    points: number;
+}
