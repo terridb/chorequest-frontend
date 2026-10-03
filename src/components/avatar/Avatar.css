@@ -1,0 +1,25 @@
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-box);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatar--unselected {
+    filter: grayscale(100%);
+}
+
+.avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-pixel);
+    font-size: 0.9rem;
+    background-color: var(--border-soft);
+    color: var(--ink-soft);
+}
+
+.avatar-fallback--selected {
+    color: var(--surface);
+}
