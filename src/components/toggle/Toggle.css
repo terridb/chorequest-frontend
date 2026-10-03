@@ -1,0 +1,29 @@
+.toggle {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 24px;
+    padding: 2px;
+    border: none;
+    border-radius: var(--r-chip);
+    background: var(--checkbox-idle);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.toggle--checked {
+    background: var(--teal);
+}
+
+.toggle-knob {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--r-box);
+    background: var(--surface);
+    transition: transform 0.15s ease;
+}
+
+.toggle--checked .toggle-knob {
+    transform: translateX(20px);
+}
