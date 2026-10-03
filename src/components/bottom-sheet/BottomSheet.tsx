@@ -27,6 +27,16 @@ function BottomSheet({open, onClose, title, children}: { open: boolean, onClose:
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [shouldRender, onClose]);
 
+    useEffect(() => {
+        if (!shouldRender) return;
+
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [shouldRender]);
+
     if (!shouldRender) return null;
 
     const handlePanelAnimationEnd = () => {
