@@ -127,7 +127,8 @@ function RepeatSchedule({
                 subtitle={`${formatShortDate(parsedStartingDate)} · then ${formatRecurrence(frequency)}`}>
                 <DateInput
                     value={startingDate}
-                    onChange={e => onStartingDateChange(e.target.value)}
+                    // Clearing the native date input gives an empty string; keep the previous date since one is required
+                    onChange={e => e.target.value && onStartingDateChange(e.target.value)}
                 />
             </SettingRow>
             <SettingRow
