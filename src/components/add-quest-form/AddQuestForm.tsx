@@ -1,7 +1,7 @@
 import './AddQuestForm.css'
 import {Controller, useForm, useWatch} from "react-hook-form";
 import type {AssignmentStrategy, Effort, Frequency} from "../../types/enums.ts";
-import type {TaskInput} from "../../types/task.ts";
+import type {Task, TaskInput} from "../../types/task.ts";
 import type {Household} from "../../types/household.ts";
 import {useEfforts} from "../../hooks/useEfforts.ts";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
@@ -14,6 +14,8 @@ import FormField from "../form-field/FormField.tsx";
 import RepeatPicker from "../repeat-picker/RepeatPicker.tsx";
 import EffortPicker from "../effort-picker/EffortPicker.tsx";
 import MemberPicker from "../member-picker/MemberPicker.tsx";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {apiClient} from "../../api/client.ts";
 
 const ASSIGNMENT_OPTIONS = [
     {value: 'SOLO', label: 'One person'},
@@ -38,7 +40,7 @@ function getRepeatHint(frequency: Frequency): string {
     return formatFrequency(frequency);
 }
 
-function AddQuestForm({household}: { household: Household }) {
+function AddQuestForm({household, onCreated}: { household: Household, onCreated: () => void }) {
     const {register, control, handleSubmit, setValue, formState: {errors, isValid}} = useForm<TaskInput>({
         // The post button is disabled until the form is valid, so errors can't wait for a submit to show up
         mode: 'onTouched',
@@ -61,10 +63,20 @@ function AddQuestForm({household}: { household: Household }) {
     const showSpinner = useDelayedLoading(isEffortsLoading);
 
     const selectedPoints = efforts?.find(item => item.effort === effort)?.points ?? 0;
+    const queryClient = useQueryClient();
+
+    const createTask = useMutation({
+        mutationFn: (input: TaskInput) =>
+            apiClient.post<Task>(`/api/households/${household.id}/tasks`, input).then(res => res.data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["assignments", household.id]});
+        }
+    });
 
     const onSubmit = (data: TaskInput) => {
-        // TODO: send to the API with a create task mutation
-        console.log('new quest: ', data);
+        createTask.mutate(data, {
+            onSuccess: () => onCreated(),
+        });
     }
 
     return (
@@ -147,11 +159,14 @@ function AddQuestForm({household}: { household: Household }) {
                         </FormField>
                     </div>
                     <div className='add-quest-form-footer'>
+                        {createTask.isError &&
+                            <p className='form-error'>Something went wrong posting your quest. Please try again.</p>
+                        }
                         <Button
                             variant='primary'
                             type='submit'
                             size='large'
-                            disabled={!isValid}
+                            disabled={!isValid || createTask.isPending}
                         >
                             Post quest <span className='add-quest-form-points'>+{selectedPoints}</span>
                         </Button>
