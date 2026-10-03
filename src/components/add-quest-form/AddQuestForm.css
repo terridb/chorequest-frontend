@@ -30,8 +30,13 @@
     border: var(--border-w) solid var(--border);
     padding: var(--space-md);
     font-family: var(--font-ui);
-    color: var(--ink-soft);
+    color: var(--ink);
     outline: none;
+}
+
+.add-quest-form input::placeholder,
+.add-quest-form textarea::placeholder {
+    color: var(--ink-soft);
 }
 
 .add-quest-form input:focus,
