@@ -1,0 +1,26 @@
+.repeat-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.repeat-schedule {
+    background-color: var(--surface);
+    border-radius: var(--r-card);
+    border: var(--border-w) solid var(--border);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.repeat-schedule-interval {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.repeat-schedule .setting-row + .setting-row {
+    padding-top: var(--space-md);
+    border-top: var(--border-w) solid var(--border);
+}
