@@ -1,11 +1,23 @@
 import './BottomSheet.css'
-import {type ReactNode, useEffect} from "react";
+import {type ReactNode, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
 import Button from "../button/Button.tsx";
 
 function BottomSheet({open, onClose, title, children}: { open: boolean, onClose: () => void, title: string, children: ReactNode }) {
+    const [shouldRender, setShouldRender] = useState(open);
+    const [isClosing, setIsClosing] = useState(false);
+
     useEffect(() => {
-        if (!open) return;
+        if (open) {
+            setShouldRender(true);
+            setIsClosing(false);
+        } else if (shouldRender) {
+            setIsClosing(true);
+        }
+    }, [open]);
+
+    useEffect(() => {
+        if (!shouldRender) return;
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose();
@@ -13,13 +25,27 @@ function BottomSheet({open, onClose, title, children}: { open: boolean, onClose:
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [open, onClose]);
+    }, [shouldRender, onClose]);
 
-    if (!open) return null;
+    if (!shouldRender) return null;
+
+    const handlePanelAnimationEnd = () => {
+        if (isClosing) {
+            setShouldRender(false);
+            setIsClosing(false);
+        }
+    };
 
     return createPortal(
-        <section className='bottom-sheet-backdrop' onClick={onClose}>
-            <div className='bottom-sheet-panel' onClick={e => e.stopPropagation()}>
+        <section
+            className={`bottom-sheet-backdrop${isClosing ? ' bottom-sheet-backdrop--closing' : ''}`}
+            onClick={onClose}
+        >
+            <div
+                className={`bottom-sheet-panel${isClosing ? ' bottom-sheet-panel--closing' : ''}`}
+                onClick={e => e.stopPropagation()}
+                onAnimationEnd={handlePanelAnimationEnd}
+            >
                 <div className='bottom-sheet-title'>
                     <Button variant='ghost' onClick={onClose} aria-label='Close'>Cancel</Button>
                     <h3>{title}</h3>
