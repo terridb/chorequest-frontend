@@ -1,0 +1,23 @@
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-page);
+}
+
+.form-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-field-hint {
+    font-family: var(--font-ui);
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+}
+
+.form-field-label {
+    font-family: var(--font-pixel);
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+}
