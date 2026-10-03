@@ -48,3 +48,17 @@
     height: 16px;
     flex-shrink: 0;
 }
+
+.button:disabled {
+    background: var(--nav-inactive);
+    color: var(--surface);
+    box-shadow: 0 3px 0 var(--ink-soft);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.button--ghost:disabled {
+    background: transparent;
+    color: var(--nav-inactive);
+    box-shadow: none;
+}
