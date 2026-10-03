@@ -1,6 +1,7 @@
 .button {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-xs);
     font-family: var(--font-pixel);
     font-size: 0.85rem;
@@ -35,6 +36,11 @@
 
 .button--ghost:active {
     transform: none;
+}
+
+.button--large {
+    padding: var(--space-md) var(--space-lg);
+    font-size: 1rem;
 }
 
 .button-icon {
