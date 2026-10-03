@@ -31,14 +31,15 @@ const FREQUENCY_UNIT_OPTIONS = [
     {value: 'YEARS', label: 'Years'},
 ] as const satisfies readonly { value: FrequencyUnit, label: string }[];
 
-function formatSameDayHint(unit: FrequencyUnit, date: Date): string {
+// "Always the same day" doesn't apply to daily schedules, so there's no hint for days
+function formatSameDayHint(unit: Exclude<FrequencyUnit, 'DAYS'>, date: Date): string {
     switch (unit) {
+        case 'WEEKS':
+            return `Always lands on a ${formatWeekday(date)}`;
         case 'MONTHS':
             return `Always lands on the ${formatDayOfMonth(date)}`;
         case 'YEARS':
             return `Always lands on ${formatDayAndMonth(date)}`;
-        default:
-            return `Always lands on a ${formatWeekday(date)}`;
     }
 }
 
@@ -119,7 +120,10 @@ function RepeatSchedule({
             <SegmentedControl
                 options={FREQUENCY_UNIT_OPTIONS}
                 value={unit}
-                onChange={newUnit => onFrequencyChange(getFrequenciesForUnit(newUnit)[0])}
+                onChange={newUnit => {
+                    onFrequencyChange(getFrequenciesForUnit(newUnit)[0]);
+                    if (newUnit === 'DAYS') onAlwaysSameDayChange(false);
+                }}
                 variant='inverted'
             />
             <SettingRow
@@ -131,14 +135,16 @@ function RepeatSchedule({
                     onChange={e => e.target.value && onStartingDateChange(e.target.value)}
                 />
             </SettingRow>
-            <SettingRow
-                title='Always the same day'
-                subtitle={formatSameDayHint(unit, parsedStartingDate)}>
-                <Toggle
-                    checked={alwaysSameDay}
-                    onChange={onAlwaysSameDayChange}
-                />
-            </SettingRow>
+            {unit !== 'DAYS' && (
+                <SettingRow
+                    title='Always the same day'
+                    subtitle={formatSameDayHint(unit, parsedStartingDate)}>
+                    <Toggle
+                        checked={alwaysSameDay}
+                        onChange={onAlwaysSameDayChange}
+                    />
+                </SettingRow>
+            )}
         </div>
     );
 }
