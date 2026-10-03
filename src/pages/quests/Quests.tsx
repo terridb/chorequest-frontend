@@ -120,7 +120,7 @@ function Quests() {
                 onClose={() => setIsAddQuestOpen(false)}
                 title='New Quest'
             >
-                <AddQuestForm/>
+                {household && <AddQuestForm household={household}/>}
             </BottomSheet>
             <Button className="add-button" onClick={() => setIsAddQuestOpen(true)}>
                 <PlusIcon className="add-button-icon"/>
