@@ -9,10 +9,13 @@ import {formatFrequency} from "../../utils/frequency.ts";
 import {toLocalDateString} from "../../utils/date.ts";
 import SegmentedControl from "../segmented-control/SegmentedControl.tsx";
 import Spinner from "../spinner/Spinner.tsx";
-import Button from "../button/Button.tsx";
+import Form from "../form/Form.tsx";
 import FormField from "../form-field/FormField.tsx";
 import RepeatPicker from "../repeat-picker/RepeatPicker.tsx";
-import EffortPicker from "../effort-picker/EffortPicker.tsx";
+import OptionPicker from "../option-picker/OptionPicker.tsx";
+import Meter from "../meter/Meter.tsx";
+import {EFFORT_LEVELS} from "../../utils/effort.ts";
+import {capitalize} from "../../utils/textUtils.ts";
 import MemberPicker from "../member-picker/MemberPicker.tsx";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {apiClient} from "../../api/client.ts";
@@ -42,7 +45,6 @@ function getRepeatHint(frequency: Frequency): string {
 
 function AddQuestForm({household, onCreated}: { household: Household, onCreated: () => void }) {
     const {register, control, handleSubmit, setValue, formState: {errors, isValid}} = useForm<TaskInput>({
-        // The post button is disabled until the form is valid, so errors can't wait for a submit to show up
         mode: 'onTouched',
         defaultValues: {
             title: '',
@@ -62,15 +64,20 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
     const {data: efforts, isLoading: isEffortsLoading, isError: isEffortsError} = useEfforts();
     const showSpinner = useDelayedLoading(isEffortsLoading);
 
+    const effortOptions = efforts?.map(item => ({
+        value: item.effort,
+        label: capitalize(item.effort),
+        icon: <Meter filled={EFFORT_LEVELS[item.effort]} total={3}/>,
+        detail: `+${item.points}`,
+    })) ?? [];
+
     const selectedPoints = efforts?.find(item => item.effort === effort)?.points ?? 0;
     const queryClient = useQueryClient();
 
     const createTask = useMutation({
         mutationFn: (input: TaskInput) =>
             apiClient.post<Task>(`/api/households/${household.id}/tasks`, input).then(res => res.data),
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["assignments", household.id]});
-        }
+        onSuccess: () => queryClient.invalidateQueries({queryKey: ["assignments", household.id]}),
     });
 
     const onSubmit = (data: TaskInput) => {
@@ -79,101 +86,88 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
         });
     }
 
+    if (!efforts) {
+        if (isEffortsError) return <p>Something went wrong loading the quest options. Please try again.</p>;
+        return showSpinner ? <Spinner/> : null;
+    }
+
     return (
-        <form className='add-quest-form' onSubmit={handleSubmit(onSubmit)}>
-            {showSpinner && <Spinner/>}
-            {isEffortsError &&
-                <p>Something went wrong loading the quest options. Please try again.</p>
-            }
-            {efforts &&
-                <>
-                    <div className='add-quest-form-fields'>
-                        <label className='form-label'>
-                            Title
-                            <input
-                                type='text'
-                                placeholder='What needs to be done?'
-                                aria-invalid={errors.title ? true : undefined}
-                                {...register('title', {
-                                    required: 'Title is required',
-                                    validate: value => value.trim() !== '' || 'Title is required',
-                                    minLength: {value: 2, message: 'Title must be between 2 and 100 characters'},
-                                    maxLength: {value: 100, message: 'Title must be between 2 and 100 characters'},
-                                })}
-                            />
-                            {errors.title && <span className='form-error'>{errors.title.message}</span>}
-                        </label>
-                        <label className='form-label'>
-                            Description
-                            <textarea
-                                placeholder='Optional details'
-                                aria-invalid={errors.description ? true : undefined}
-                                {...register('description', {
-                                    maxLength: {value: 500, message: 'Description must be at most 500 characters'},
-                                })}
-                            />
-                            {errors.description && <span className='form-error'>{errors.description.message}</span>}
-                        </label>
+        <Form
+            onSubmit={handleSubmit(onSubmit)}
+            submitLabel={<>Post quest <span className='add-quest-form-points'>+{selectedPoints}</span></>}
+            submitDisabled={!isValid || createTask.isPending}
+            error={createTask.isError ? 'Something went wrong posting your quest. Please try again.' : undefined}
+        >
+            <label className='form-label'>
+                Title
+                <input
+                    type='text'
+                    placeholder='What needs to be done?'
+                    aria-invalid={errors.title ? true : undefined}
+                    {...register('title', {
+                        required: 'Title is required',
+                        validate: value => value.trim() !== '' || 'Title is required',
+                        minLength: {value: 2, message: 'Title must be between 2 and 100 characters'},
+                        maxLength: {value: 100, message: 'Title must be between 2 and 100 characters'},
+                    })}
+                />
+                {errors.title && <span className='form-error'>{errors.title.message}</span>}
+            </label>
+            <label className='form-label'>
+                Description
+                <textarea
+                    placeholder='Optional details'
+                    aria-invalid={errors.description ? true : undefined}
+                    {...register('description', {
+                        maxLength: {value: 500, message: 'Description must be at most 500 characters'},
+                    })}
+                />
+                {errors.description && <span className='form-error'>{errors.description.message}</span>}
+            </label>
 
-                        <FormField label='Repeats' hint={getRepeatHint(frequency)}>
-                            <RepeatPicker
-                                frequency={frequency}
-                                startingDate={startingDate}
-                                alwaysSameDay={alwaysSameDay ?? false}
-                                onFrequencyChange={value => setValue('frequency', value)}
-                                onStartingDateChange={value => setValue('startingDate', value)}
-                                onAlwaysSameDayChange={value => setValue('alwaysSameDay', value)}
-                            />
-                        </FormField>
+            <FormField label='Repeats' hint={getRepeatHint(frequency)}>
+                <RepeatPicker
+                    frequency={frequency}
+                    startingDate={startingDate}
+                    alwaysSameDay={alwaysSameDay ?? false}
+                    onFrequencyChange={value => setValue('frequency', value)}
+                    onStartingDateChange={value => setValue('startingDate', value)}
+                    onAlwaysSameDayChange={value => setValue('alwaysSameDay', value)}
+                />
+            </FormField>
 
-                        <FormField label='Effort' hint={EFFORT_HINTS[effort]}>
-                            <Controller
-                                name='effort'
-                                control={control}
-                                render={({field}) => (
-                                    <EffortPicker efforts={efforts} value={field.value} onChange={field.onChange}/>
-                                )}
-                            />
-                        </FormField>
+            <FormField label='Effort' hint={EFFORT_HINTS[effort]}>
+                <Controller
+                    name='effort'
+                    control={control}
+                    render={({field}) => (
+                        <OptionPicker options={effortOptions} value={field.value} onChange={field.onChange}/>
+                    )}
+                />
+            </FormField>
 
-                        <FormField label='Who does it' hint={ASSIGNMENT_HINTS[strategy]}>
-                            <Controller
-                                name='strategy'
-                                control={control}
-                                render={({field}) => (
-                                    <SegmentedControl options={ASSIGNMENT_OPTIONS} value={field.value}
-                                                      onChange={field.onChange}/>
-                                )}
-                            />
-                        </FormField>
+            <FormField label='Who does it' hint={ASSIGNMENT_HINTS[strategy]}>
+                <Controller
+                    name='strategy'
+                    control={control}
+                    render={({field}) => (
+                        <SegmentedControl options={ASSIGNMENT_OPTIONS} value={field.value}
+                                          onChange={field.onChange}/>
+                    )}
+                />
+            </FormField>
 
-                        <FormField label={strategy === 'SOLO' ? 'Responsible' : 'Starts with'}>
-                            <Controller
-                                name='responsibleMemberId'
-                                control={control}
-                                render={({field}) => (
-                                    <MemberPicker members={household.members} value={field.value}
-                                                  onChange={field.onChange}/>
-                                )}
-                            />
-                        </FormField>
-                    </div>
-                    <div className='add-quest-form-footer'>
-                        {createTask.isError &&
-                            <p className='form-error'>Something went wrong posting your quest. Please try again.</p>
-                        }
-                        <Button
-                            variant='primary'
-                            type='submit'
-                            size='large'
-                            disabled={!isValid || createTask.isPending}
-                        >
-                            Post quest <span className='add-quest-form-points'>+{selectedPoints}</span>
-                        </Button>
-                    </div>
-                </>
-            }
-        </form>
+            <FormField label={strategy === 'SOLO' ? 'Responsible' : 'Starts with'}>
+                <Controller
+                    name='responsibleMemberId'
+                    control={control}
+                    render={({field}) => (
+                        <MemberPicker members={household.members} value={field.value}
+                                      onChange={field.onChange}/>
+                    )}
+                />
+            </FormField>
+        </Form>
     );
 }
 
