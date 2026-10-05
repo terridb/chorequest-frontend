@@ -96,6 +96,22 @@ export function SettingsIcon(props: SVGProps<SVGSVGElement>) {
     );
 }
 
+export function CheckIcon(props: SVGProps<SVGSVGElement>) {
+    return (
+        <PixelIcon {...props}>
+            <rect x="10" y="2" width="1" height="1"/>
+            <rect x="9" y="3" width="2" height="1"/>
+            <rect x="8" y="4" width="2" height="1"/>
+            <rect x="1" y="5" width="2" height="1"/>
+            <rect x="7" y="5" width="2" height="1"/>
+            <rect x="2" y="6" width="2" height="1"/>
+            <rect x="6" y="6" width="2" height="1"/>
+            <rect x="3" y="7" width="4" height="1"/>
+            <rect x="4" y="8" width="2" height="1"/>
+        </PixelIcon>
+    );
+}
+
 export function PlusIcon(props: SVGProps<SVGSVGElement>) {
     return (
         <PixelIcon {...props}>

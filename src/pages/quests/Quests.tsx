@@ -97,18 +97,24 @@ function Quests() {
                     <CardSection
                         assignments={lateAssignments}
                         title='late'
+                        householdId={householdId}
+                        members={household?.members ?? []}
                     />
                 }
                 {!isError && todayAssignments.length > 0 &&
                     <CardSection
                         assignments={todayAssignments}
                         title='today'
+                        householdId={householdId}
+                        members={household?.members ?? []}
                     />
                 }
                 {!isError && otherAssignments.length > 0 &&
                     <CardSection
                         assignments={otherAssignments}
                         title='future'
+                        householdId={householdId}
+                        members={household?.members ?? []}
                     />
                 }
                 {!isError && otherAssignments.length <= 0 && lateAssignments.length <= 0 && todayAssignments.length <= 0 && (

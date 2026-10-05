@@ -20,12 +20,11 @@
     gap: var(--space-md);
 }
 
-.checkbox {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
-    border: 2px solid var(--checkbox-idle);
-    border-radius: var(--r-box);
+.quest-card-error {
+    padding: var(--space-sm) var(--space-md);
+    color: var(--red);
+    background-color: var(--red-tint);
+    border-top: 1px solid var(--red-line);
 }
 
 .quest-card-title {
@@ -74,4 +73,9 @@
 
 .quest-card--late .checkbox {
     border-color: var(--red);
+}
+
+.quest-card--late .checkbox--checked {
+    background-color: var(--teal);
+    border-color: var(--teal);
 }

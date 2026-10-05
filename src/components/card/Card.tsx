@@ -2,21 +2,35 @@ import './Card.css'
 import type {TaskAssignment} from "../../types/task.ts";
 import {formatFrequency} from "../../utils/frequency.ts";
 import {formatDueDate, isDueDatePast} from "../../utils/date.ts";
-import EffortMeter from "../effort-meter/EffortMeter.tsx";
+import Meter from "../meter/Meter.tsx";
+import {EFFORT_LEVELS} from "../../utils/effort.ts";
+import {useCompleteTask} from "../../hooks/useCompleteTask.ts";
+import Checkbox from "../checkbox/Checkbox.tsx";
 
-function Card({item}: { item: TaskAssignment }) {
+function Card({item, householdId, memberId}: { item: TaskAssignment , householdId: string, memberId: string | undefined }) {
     const isLate = item.dueDate ? isDueDatePast(item.dueDate) : false;
+
+    const completeTask = useCompleteTask(householdId);
+
+    const handleComplete = () => {
+        if (!memberId) return;
+        completeTask.mutate({assignmentId: item.id, completedByMemberId: memberId});
+    }
 
     return (
         <li className={`quest-card${isLate ? ' quest-card--late' : ''}`}>
             <div className='quest-card-header'>
-                <span className='checkbox'></span>
+                <Checkbox
+                    checked={completeTask.isPending}
+                    onClick={handleComplete}
+                    disabled={completeTask.isPending || !memberId}
+                />
                 <div className='quest-card-title'>
                     <p className='quest-title'>{item.task.title}</p>
                     <div className='quest-details'>
                         <p>{formatFrequency(item.task.frequency)}</p>
                         <p>-</p>
-                        <EffortMeter effort={item.task.effort}/>
+                        <Meter filled={EFFORT_LEVELS[item.task.effort]} total={3}/>
                     </div>
                 </div>
                 <p className='points'>+{item.task.defaultPoints}</p>
@@ -30,6 +44,9 @@ function Card({item}: { item: TaskAssignment }) {
                     </>
                 }
             </div>
+            {completeTask.isError &&
+                <p className='quest-card-error'>Couldn't complete this quest. Please try again.</p>
+            }
         </li>
     );
 }
