@@ -15,11 +15,13 @@ import {PlusIcon} from "../../components/icons/NavIcons.tsx";
 import {useState} from "react";
 import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
 import AddQuestForm from "../../components/add-quest-form/AddQuestForm.tsx";
+import AddGoalForm from "../../components/add-goal-form/AddGoalForm.tsx";
 
 function Quests() {
     const householdId = '33333333-3333-3333-3333-333333333333';
 
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
+    const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
 
     const {data: assignments, isLoading: isAssignmentsLoading, isError: isAssignmentsError} = useQuery({
         queryKey: ["assignments", householdId],
@@ -36,11 +38,11 @@ function Quests() {
     const {data: goal, isLoading: isGoalLoading, isError: isGoalError} = useQuery({
         queryKey: ["goal", householdId],
         queryFn: () =>
-            apiClient.get<Goal>(`/api/households/${householdId}/goals/current`).then(res => res.data)
+            apiClient.get<Goal | null>(`/api/households/${householdId}/goals/current`).then(res => res.data || null)
     })
 
     const isLoading = isAssignmentsLoading || isHouseholdLoading || isGoalLoading;
-    const isError = isAssignmentsError || isHouseholdError || isGoalError;
+    const isError = isAssignmentsError || isHouseholdError;
     const showSpinner = useDelayedLoading(isLoading);
 
     console.log('assignments: ', assignments)
@@ -68,24 +70,22 @@ function Quests() {
         return goal.goalPoints - goal.currentPoints;
     }
 
-    const handleSetGoal = () => {
-        // TODO: wire up goal creation flow
-    }
-
     return (
         <>
             <Header title="Quest Board">
-                {goal ?
+                {isGoalError ? (
+                    <p>Something went wrong loading your goal.</p>
+                ) : goal ? (
                     <>
                         <Scorebar title='House score' goal={goal}/>
                         <p>{calculatePointsToGo(goal)} points to go for {goal.title}</p>
-                    </> : <>
-                        <Button onClick={handleSetGoal} variant="secondary" className="set-goal-button">
-                            <PlusIcon className="button-icon"/>
-                            Set a new goal
-                        </Button>
                     </>
-                }
+                ) : (
+                    <Button onClick={() => setIsAddGoalOpen(true)} variant="secondary" className="set-goal-button">
+                        <PlusIcon className="button-icon"/>
+                        Set a new goal
+                    </Button>
+                )}
 
             </Header>
             <main className="quest-board-main outer-container">
@@ -121,6 +121,13 @@ function Quests() {
                     <p>No assignments added yet.</p>
                 )}
             </main>
+            <BottomSheet
+                open={isAddGoalOpen}
+                onClose={() => setIsAddGoalOpen(false)}
+                title='New Goal'
+            >
+                {household && <AddGoalForm household={household} onCreated={() => setIsAddGoalOpen(false)}/>}
+            </BottomSheet>
             <BottomSheet
                 open={isAddQuestOpen}
                 onClose={() => setIsAddQuestOpen(false)}
