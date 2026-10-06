@@ -8,6 +8,33 @@
     border: var(--border-w) solid var(--border);
     box-shadow: var(--shadow-card);
     overflow: hidden;
+    position: relative;
+}
+
+.quest-card-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.quest-card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.quest-card-link:focus-visible {
+    outline: none;
+}
+
+.quest-card-link:focus-visible::after {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: inherit;
+}
+
+.quest-card .checkbox {
+    position: relative;
+    z-index: 1;
 }
 
 .quest-card-header, .quest-card-body {
@@ -32,12 +59,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-}
-
-.points {
-    font-family: var(--font-pixel);
-    font-size: 1.2rem;
-    color: var(--blue);
 }
 
 .quest-card-body {

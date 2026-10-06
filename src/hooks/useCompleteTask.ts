@@ -2,7 +2,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import type {TaskCompletion, TaskCompletionInput} from "../types/task.ts";
 import {apiClient} from "../api/client.ts";
 
-export function useCompleteTask(householdId: string) {
+export function useCompleteTask(householdId: string | undefined) {
     const queryClient = useQueryClient();
 
     return useMutation({

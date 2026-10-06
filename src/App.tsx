@@ -5,6 +5,7 @@ import Settings from "./pages/settings/Settings.tsx";
 import Lists from "./pages/lists/Lists.tsx";
 import Nav from "./components/nav/Nav.tsx";
 import RequireAuth from "./auth/RequireAuth.tsx";
+import QuestDetails from "./pages/quest-details/QuestDetails.tsx";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <RequireAuth>
             <Routes>
                 <Route path="/quests" element={<Quests/>}/>
+                <Route path="/quests/:id" element={<QuestDetails/>}/>
                 <Route path="/leaderboard" element={<Board/>}/>
                 <Route path="/settings" element={<Settings/>}/>
                 <Route path="/lists" element={<Lists/>}/>

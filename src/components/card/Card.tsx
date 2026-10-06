@@ -6,6 +6,7 @@ import Meter from "../meter/Meter.tsx";
 import {EFFORT_LEVELS} from "../../utils/effort.ts";
 import {useCompleteTask} from "../../hooks/useCompleteTask.ts";
 import Checkbox from "../checkbox/Checkbox.tsx";
+import {Link} from "react-router";
 
 function Card({item, householdId, memberId}: { item: TaskAssignment , householdId: string, memberId: string | undefined }) {
     const isLate = item.dueDate ? isDueDatePast(item.dueDate) : false;
@@ -26,7 +27,9 @@ function Card({item, householdId, memberId}: { item: TaskAssignment , householdI
                     disabled={completeTask.isPending || !memberId}
                 />
                 <div className='quest-card-title'>
-                    <p className='quest-title'>{item.task.title}</p>
+                    <Link to={`/quests/${item.task.id}`} className='quest-card-link'>
+                        <p className='quest-title'>{item.task.title}</p>
+                    </Link>
                     <div className='quest-details'>
                         <p>{formatFrequency(item.task.frequency)}</p>
                         <p>-</p>

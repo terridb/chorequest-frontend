@@ -1,4 +1,6 @@
 import type {Frequency} from "../types/enums.ts";
+import type {Task} from "../types/task.ts";
+import {formatDayAndMonth, formatDayOfMonth, formatWeekday, parseLocalDate} from "./date.ts";
 
 export type RepeatingFrequency = Exclude<Frequency, 'AS_NEEDED' | 'ONCE'>;
 
@@ -20,7 +22,6 @@ const FREQUENCY_LABELS: Record<Frequency, string> = {
     YEARLY: 'Yearly',
 };
 
-// Key order determines the order of the interval options within a unit
 const FREQUENCY_SCHEDULES: Record<RepeatingFrequency, { unit: FrequencyUnit, interval: number }> = {
     DAILY: {unit: 'DAYS', interval: 1},
     EVERY_OTHER_DAY: {unit: 'DAYS', interval: 2},
@@ -65,4 +66,23 @@ export function formatRecurrence(frequency: RepeatingFrequency): string {
     return interval === 1
         ? `every ${UNIT_SINGULAR[unit]}`
         : `every ${interval} ${UNIT_SINGULAR[unit]}s`;
+}
+
+// "Weekly · Mondays", "Monthly · on the 14th", "Every 3 days"
+// The day is only shown when the quest always lands on the same day, otherwise it drifts with each completion
+export function formatSchedule({frequency, startingDate, alwaysSameDay}: Pick<Task, 'frequency' | 'startingDate' | 'alwaysSameDay'>): string {
+    const label = formatFrequency(frequency);
+    if (!isRepeatingFrequency(frequency) || !alwaysSameDay) return label;
+
+    const date = parseLocalDate(startingDate);
+    switch (FREQUENCY_SCHEDULES[frequency].unit) {
+        case 'DAYS':
+            return label;
+        case 'WEEKS':
+            return `${label} · ${formatWeekday(date)}s`;
+        case 'MONTHS':
+            return `${label} · on the ${formatDayOfMonth(date)}`;
+        case 'YEARS':
+            return `${label} · on ${formatDayAndMonth(date)}`;
+    }
 }
