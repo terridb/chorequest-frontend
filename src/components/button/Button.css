@@ -38,6 +38,23 @@
     transform: none;
 }
 
+.button--dark {
+    background: var(--ink-faded);
+    box-shadow: none;
+}
+
+.button--small {
+    position: relative;
+    padding: var(--space-xs) var(--space-md);
+    font-size: 0.75rem;
+}
+
+.button--small::after {
+    content: '';
+    position: absolute;
+    inset: -11px -4px;
+}
+
 .button--large {
     padding: var(--space-md) var(--space-lg);
     font-size: 1rem;
@@ -47,6 +64,10 @@
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+}
+
+.button:disabled .button-points {
+    opacity: 0.6;
 }
 
 .button:disabled {

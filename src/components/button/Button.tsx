@@ -2,8 +2,8 @@ import './Button.css'
 import type {ButtonHTMLAttributes} from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'ghost';
-    size?: 'default' | 'large';
+    variant?: 'primary' | 'secondary' | 'ghost' | 'dark';
+    size?: 'default' | 'small' | 'large';
 }
 
 function Button({className, variant = 'primary', size = 'default', children, ...props}: ButtonProps) {

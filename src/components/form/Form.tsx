@@ -16,7 +16,7 @@ function Form({onSubmit, submitLabel, submitDisabled, error, children}: FormProp
             <div className='form-fields'>
                 {children}
             </div>
-            <div className='form-footer'>
+            <div className='action-bar'>
                 {error && <p className='form-error'>{error}</p>}
                 <Button variant='primary' type='submit' size='large' disabled={submitDisabled}>
                     {submitLabel}

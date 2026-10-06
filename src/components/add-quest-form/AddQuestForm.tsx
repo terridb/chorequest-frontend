@@ -1,6 +1,5 @@
-import './AddQuestForm.css'
 import {Controller, useForm, useWatch} from "react-hook-form";
-import type {AssignmentStrategy, Effort, Frequency} from "../../types/enums.ts";
+import type {AssignmentStrategy, Frequency} from "../../types/enums.ts";
 import type {Task, TaskInput} from "../../types/task.ts";
 import type {Household} from "../../types/household.ts";
 import {useEfforts} from "../../hooks/useEfforts.ts";
@@ -10,11 +9,11 @@ import {toLocalDateString} from "../../utils/date.ts";
 import SegmentedControl from "../segmented-control/SegmentedControl.tsx";
 import Spinner from "../spinner/Spinner.tsx";
 import Form from "../form/Form.tsx";
-import FormField from "../form-field/FormField.tsx";
+import LabeledGroup from "../labeled-group/LabeledGroup.tsx";
 import RepeatPicker from "../repeat-picker/RepeatPicker.tsx";
 import OptionPicker from "../option-picker/OptionPicker.tsx";
 import Meter from "../meter/Meter.tsx";
-import {EFFORT_LEVELS} from "../../utils/effort.ts";
+import {EFFORT_HINTS, EFFORT_LEVELS} from "../../utils/effort.ts";
 import {capitalize} from "../../utils/textUtils.ts";
 import MemberPicker from "../member-picker/MemberPicker.tsx";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
@@ -24,13 +23,6 @@ const ASSIGNMENT_OPTIONS = [
     {value: 'SOLO', label: 'One person'},
     {value: 'ROTATING', label: 'Rotate'},
 ] as const satisfies readonly { value: AssignmentStrategy, label: string }[];
-
-const EFFORT_HINTS: Record<Effort, string> = {
-    NONE: 'Just needs tracking',
-    SMALL: 'Under 10 min',
-    MEDIUM: '10-30 min',
-    BIG: '30 min or more',
-};
 
 const ASSIGNMENT_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Same person every time',
@@ -94,7 +86,7 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
     return (
         <Form
             onSubmit={handleSubmit(onSubmit)}
-            submitLabel={<>Post quest <span className='add-quest-form-points'>+{selectedPoints}</span></>}
+            submitLabel={<>Post quest <span className='button-points'>+{selectedPoints}</span></>}
             submitDisabled={!isValid || createTask.isPending}
             error={createTask.isError ? 'Something went wrong posting your quest. Please try again.' : undefined}
         >
@@ -125,7 +117,7 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                 {errors.description && <span className='form-error'>{errors.description.message}</span>}
             </label>
 
-            <FormField label='Repeats' hint={getRepeatHint(frequency)}>
+            <LabeledGroup label='Repeats' hint={getRepeatHint(frequency)}>
                 <RepeatPicker
                     frequency={frequency}
                     startingDate={startingDate}
@@ -134,9 +126,9 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                     onStartingDateChange={value => setValue('startingDate', value)}
                     onAlwaysSameDayChange={value => setValue('alwaysSameDay', value)}
                 />
-            </FormField>
+            </LabeledGroup>
 
-            <FormField label='Effort' hint={EFFORT_HINTS[effort]}>
+            <LabeledGroup label='Effort' hint={EFFORT_HINTS[effort]}>
                 <Controller
                     name='effort'
                     control={control}
@@ -144,9 +136,9 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                         <OptionPicker options={effortOptions} value={field.value} onChange={field.onChange}/>
                     )}
                 />
-            </FormField>
+            </LabeledGroup>
 
-            <FormField label='Who does it' hint={ASSIGNMENT_HINTS[strategy]}>
+            <LabeledGroup label='Who does it' hint={ASSIGNMENT_HINTS[strategy]}>
                 <Controller
                     name='strategy'
                     control={control}
@@ -155,9 +147,9 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                                           onChange={field.onChange}/>
                     )}
                 />
-            </FormField>
+            </LabeledGroup>
 
-            <FormField label={strategy === 'SOLO' ? 'Responsible' : 'Starts with'}>
+            <LabeledGroup label={strategy === 'SOLO' ? 'Responsible' : 'Starts with'}>
                 <Controller
                     name='responsibleMemberId'
                     control={control}
@@ -166,7 +158,7 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                                       onChange={field.onChange}/>
                     )}
                 />
-            </FormField>
+            </LabeledGroup>
         </Form>
     );
 }

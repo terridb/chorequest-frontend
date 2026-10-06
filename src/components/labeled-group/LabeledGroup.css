@@ -1,22 +1,22 @@
-.form-field {
+.labeled-group {
     display: flex;
     flex-direction: column;
     gap: var(--space-page);
 }
 
-.form-field-header {
+.labeled-group-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.form-field-hint {
+.labeled-group-hint {
     font-family: var(--font-ui);
     color: var(--ink-soft);
     font-size: 0.8rem;
 }
 
-.form-field-label {
+.labeled-group-label {
     font-family: var(--font-pixel);
     color: var(--ink-muted);
     font-size: 0.8rem;

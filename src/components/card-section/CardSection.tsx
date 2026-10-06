@@ -1,5 +1,6 @@
 import './CardSection.css';
 import Card from "../card/Card.tsx";
+import SectionTitle from "../section-title/SectionTitle.tsx";
 import type {TaskAssignment} from "../../types/task.ts";
 import type {HouseholdMember} from "../../types/household.ts";
 
@@ -14,10 +15,10 @@ function CardSection({householdId, members, assignments, title}: {
         members.find(member => member.user.id === assignment.user.id)?.id;
 
     return (
-        <section className='quest-card-section'>
-            <h4 className={`quest-section-title${title === 'late' ? ' quest-section-title--late' : ''}`}>
+        <section className='inner-container quest-card-section'>
+            <SectionTitle danger={title === 'late'}>
                 {title} x{assignments.length}
-            </h4>
+            </SectionTitle>
             <ul className='quests-list'>
                 {assignments.map((assignment) =>
                     <Card

@@ -2,7 +2,7 @@ import './AddGoalForm.css'
 import type {Goal, GoalRequest} from "../../types/goal.ts";
 import Form from "../form/Form.tsx";
 import {Controller, useForm, useWatch} from "react-hook-form";
-import FormField from "../form-field/FormField.tsx";
+import LabeledGroup from "../labeled-group/LabeledGroup.tsx";
 import type {Household} from "../../types/household.ts";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {apiClient} from "../../api/client.ts";
@@ -58,7 +58,7 @@ function AddGoalForm({household, onCreated}: { household: Household, onCreated: 
     return (
         <Form
             onSubmit={handleSubmit(onSubmit)}
-            submitLabel={<>Set goal <span className='add-quest-form-points'>- {goalPoints} pts</span> </>}
+            submitLabel={<>Set goal <span className='button-points'>- {goalPoints} pts</span> </>}
             submitDisabled={!isValid}
             error={createGoal.isError ? 'Something went wrong posting your goal. Please try again' : undefined}
         >
@@ -88,7 +88,7 @@ function AddGoalForm({household, onCreated}: { household: Household, onCreated: 
                 {errors.description && <span className='form-error'>{errors.description.message}</span>}
             </label>
 
-            <FormField label='Goal points' hint={getPointsHint(goalPoints)}>
+            <LabeledGroup label='Goal points' hint={getPointsHint(goalPoints)}>
                 <Controller
                     name='goalPoints'
                     control={control}
@@ -120,7 +120,7 @@ function AddGoalForm({household, onCreated}: { household: Household, onCreated: 
                     )}
                 />
                 {errors.goalPoints && <span className='form-error'>{errors.goalPoints.message}</span>}
-            </FormField>
+            </LabeledGroup>
         </Form>
     );
 }

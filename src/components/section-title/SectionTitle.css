@@ -1,0 +1,22 @@
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    color: var(--ink);
+}
+
+.section-title::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: var(--ink);
+}
+
+.section-title--danger {
+    color: var(--red);
+}
+
+.section-title--danger::before {
+    background-color: var(--red);
+}

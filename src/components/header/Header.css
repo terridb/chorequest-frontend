@@ -7,11 +7,25 @@ header {
     font-family: var(--font-pixel);
 }
 
+.page-title-row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-md);
+}
+
 .page-title-wrapper {
-     display: flex;
-     flex-direction: column;
-     margin-right: auto;
- }
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+}
+
+.page-title-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
 
 .page-title-wrapper h1 span {
     display: block;
@@ -25,4 +39,50 @@ header p {
 
 header .button {
     margin: var(--space-md) 0;
+}
+
+header .points {
+    color: var(--surface);
+}
+
+header .meter-square {
+    background: var(--ink-muted);
+}
+
+header .meter-square.filled {
+    background: var(--surface);
+}
+
+.header-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+}
+
+.header-toolbar .button {
+    margin: 0;
+}
+
+.header-back {
+    position: relative;
+    font-family: var(--font-pixel);
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.header-back::after {
+    content: '';
+    position: absolute;
+    inset: -14px -8px;
+}
+
+header .section-title:not(.section-title--danger) {
+    color: var(--ink-muted);
+}
+
+header .section-title:not(.section-title--danger)::before {
+    background-color: var(--ink-muted);
 }

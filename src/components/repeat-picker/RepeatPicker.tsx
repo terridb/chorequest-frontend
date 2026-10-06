@@ -112,7 +112,7 @@ function RepeatSchedule({
     const parsedStartingDate = parseLocalDate(startingDate);
 
     return (
-        <div className='repeat-schedule'>
+        <div className='panel'>
             <div className='repeat-schedule-interval'>
                 <p>Every</p>
                 <ChipGroup options={intervalOptions} value={frequency} onChange={onFrequencyChange}/>

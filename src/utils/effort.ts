@@ -6,3 +6,10 @@ export const EFFORT_LEVELS: Record<Effort, number> = {
     MEDIUM: 2,
     BIG: 3,
 };
+
+export const EFFORT_HINTS: Record<Effort, string> = {
+    NONE: 'Just needs tracking',
+    SMALL: 'Under 10 min',
+    MEDIUM: '10-30 min',
+    BIG: '30 min or more',
+};

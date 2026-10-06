@@ -3,10 +3,11 @@ import Avatar from "../avatar/Avatar.tsx";
 import OptionCard from "../option-card/OptionCard.tsx";
 import OptionContainer from "../option-container/OptionContainer.tsx";
 
-function MemberPicker({members, value, onChange}: {
+function MemberPicker({members, value, onChange, decorative = false}: {
     members: HouseholdMember[];
     value?: string;
-    onChange: (memberId: string) => void;
+    onChange?: (memberId: string) => void;
+    decorative?: boolean;
 }) {
     return (
         <OptionContainer>
@@ -23,7 +24,8 @@ function MemberPicker({members, value, onChange}: {
                     }
                     label={member.user.firstName}
                     selected={member.id === value}
-                    onClick={() => onChange(member.id)}
+                    decorative={decorative}
+                    onClick={() => onChange?.(member.id)}
                 />
             ))}
         </OptionContainer>

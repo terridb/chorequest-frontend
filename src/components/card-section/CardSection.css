@@ -7,31 +7,5 @@
 }
 
 .quest-card-section {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
     gap: var(--space-md);
-}
-
-.quest-section-title {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    color: var(--ink);
-}
-
-.quest-section-title::before {
-    content: '';
-    display: block;
-    width: 12px;
-    height: 12px;
-    background-color: var(--ink);
-}
-
-.quest-section-title--late {
-    color: var(--red);
-}
-
-.quest-section-title--late::before {
-    background-color: var(--red);
 }

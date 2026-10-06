@@ -43,3 +43,7 @@
 .option-card--selected .option-card-label {
     color: var(--ink);
 }
+
+.option-card--decorative {
+    cursor: default;
+}
