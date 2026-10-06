@@ -1,6 +1,6 @@
 import {type ReactNode, useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
-import Spinner from "../components/spinner/Spinner.tsx";
+import Spinner from "../components/ui/spinner/Spinner.tsx";
 import useApiAuth from "./useApiAuth.ts";
 import useProvisionUser from "./useProvisionUser.ts";
 import "./RequireAuth.css";

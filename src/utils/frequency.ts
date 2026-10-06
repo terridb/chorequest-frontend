@@ -70,7 +70,11 @@ export function formatRecurrence(frequency: RepeatingFrequency): string {
 
 // "Weekly · Mondays", "Monthly · on the 14th", "Every 3 days"
 // The day is only shown when the quest always lands on the same day, otherwise it drifts with each completion
-export function formatSchedule({frequency, startingDate, alwaysSameDay}: Pick<Task, 'frequency' | 'startingDate' | 'alwaysSameDay'>): string {
+export function formatSchedule({
+                                   frequency,
+                                   startingDate,
+                                   alwaysSameDay
+                               }: Pick<Task, 'frequency' | 'startingDate' | 'alwaysSameDay'>): string {
     const label = formatFrequency(frequency);
     if (!isRepeatingFrequency(frequency) || !alwaysSameDay) return label;
 

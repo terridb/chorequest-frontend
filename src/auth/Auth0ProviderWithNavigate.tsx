@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import {Auth0Provider, type AppState} from "@auth0/auth0-react";
+import {type AppState, Auth0Provider} from "@auth0/auth0-react";
 import {useNavigate} from "react-router";
 
 function Auth0ProviderWithNavigate({children}: { children: ReactNode }) {

@@ -6,7 +6,7 @@ export function useCompleteTask(householdId: string | undefined) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({assignmentId, ...input}: TaskCompletionInput & { assignmentId: string}) =>
+        mutationFn: ({assignmentId, ...input}: TaskCompletionInput & { assignmentId: string }) =>
             apiClient.post<TaskCompletion>(`/api/assignments/${assignmentId}/completions`, input).then(res => res.data),
         onSuccess: () => Promise.all([
             queryClient.invalidateQueries({queryKey: ["assignments", householdId]}),

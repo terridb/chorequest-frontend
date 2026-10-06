@@ -1,27 +1,28 @@
 import './QuestDetails.css'
-import Header from "../../components/header/Header.tsx";
+import Header from "../../components/ui/header/Header.tsx";
 import type {Task} from "../../types/task.ts";
 import {Link, useNavigate, useParams} from "react-router";
-import Button from "../../components/button/Button.tsx";
-import SectionTitle from "../../components/section-title/SectionTitle.tsx";
+import Button from "../../components/ui/button/Button.tsx";
+import SectionTitle from "../../components/ui/section-title/SectionTitle.tsx";
 import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
 import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
 import {formatDueDate, isDueDatePast} from "../../utils/date.ts";
-import Meter from "../../components/meter/Meter.tsx";
-import Spinner from "../../components/spinner/Spinner.tsx";
+import Meter from "../../components/ui/meter/Meter.tsx";
+import Spinner from "../../components/ui/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import {EFFORT_HINTS, EFFORT_LEVELS} from "../../utils/effort.ts";
-import MemberPicker from "../../components/member-picker/MemberPicker.tsx";
-import LabeledGroup from "../../components/labeled-group/LabeledGroup.tsx";
+import OptionPicker from "../../components/ui/option-picker/OptionPicker.tsx";
+import {toMemberOptions} from "../../components/ui/option-picker/memberOptions.tsx";
+import LabeledGroup from "../../components/ui/labeled-group/LabeledGroup.tsx";
 import type {AssignmentStrategy} from "../../types/enums.ts";
-import SettingRow from "../../components/setting-row/SettingRow.tsx";
+import SettingRow from "../../components/ui/setting-row/SettingRow.tsx";
 import {formatSchedule} from "../../utils/frequency.ts";
-import {capitalize} from "../../utils/textUtils.ts";
+import {capitalize} from "../../utils/text.ts";
 import type {Household, HouseholdMember} from "../../types/household.ts";
 import {useCompleteTask} from "../../hooks/useCompleteTask.ts";
 import {useGetTask} from "../../hooks/useGetTask.ts";
-import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
-import QuestForm from "../../components/quest-form/QuestForm.tsx";
+import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
+import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
 import {useState} from "react";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
@@ -128,7 +129,7 @@ function QuestDetails() {
                         </div>
                     </LabeledGroup>
                     <LabeledGroup label='Rotation' hint={STRATEGY_HINTS[task.strategy]}>
-                        <MemberPicker members={members} value={highlightedMemberId} decorative/>
+                        <OptionPicker options={toMemberOptions(members)} value={highlightedMemberId} decorative/>
                     </LabeledGroup>
                 </section>
             </main>

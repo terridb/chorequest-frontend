@@ -1,20 +1,19 @@
 import './Quests.css'
-import Header from "../../components/header/Header.tsx";
-import Scorebar from "../../components/score-bar/Scorebar.tsx";
-import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../../api/client.ts";
+import Header from "../../components/ui/header/Header.tsx";
+import Scorebar from "../../components/goals/score-bar/Scorebar.tsx";
 import type {TaskAssignment} from "../../types/task.ts";
-import Spinner from "../../components/spinner/Spinner.tsx";
+import Spinner from "../../components/ui/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/date.ts";
-import CardSection from "../../components/card-section/CardSection.tsx";
+import QuestSection from "../../components/quests/quest-section/QuestSection.tsx";
 import type {Goal} from "../../types/goal.ts";
-import Button from "../../components/button/Button.tsx";
-import {PlusIcon} from "../../components/icons/NavIcons.tsx";
+import {useGetCurrentGoal} from "../../hooks/useGetCurrentGoal.ts";
+import Button from "../../components/ui/button/Button.tsx";
+import {PlusIcon} from "../../components/ui/icons/NavIcons.tsx";
 import {useState} from "react";
-import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
-import QuestForm from "../../components/quest-form/QuestForm.tsx";
-import AddGoalForm from "../../components/add-goal-form/AddGoalForm.tsx";
+import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
+import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
+import AddGoalForm from "../../components/goals/add-goal-form/AddGoalForm.tsx";
 import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
 import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
 
@@ -24,15 +23,15 @@ function Quests() {
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
 
-    const {data: assignments, isError: isAssignmentsError, isLoading: isAssignmentsLoading} = useGetAssignments(householdId);
+    const {
+        data: assignments,
+        isError: isAssignmentsError,
+        isLoading: isAssignmentsLoading
+    } = useGetAssignments(householdId);
 
     const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useGetHousehold(householdId);
 
-    const {data: goal, isLoading: isGoalLoading, isError: isGoalError} = useQuery({
-        queryKey: ["goal", householdId],
-        queryFn: () =>
-            apiClient.get<Goal | null>(`/api/households/${householdId}/goals/current`).then(res => res.data || null)
-    })
+    const {data: goal, isLoading: isGoalLoading, isError: isGoalError} = useGetCurrentGoal(householdId);
 
     const isLoading = isAssignmentsLoading || isHouseholdLoading || isGoalLoading;
     const isError = isAssignmentsError || isHouseholdError;
@@ -82,15 +81,16 @@ function Quests() {
                     <p>Something went wrong loading your quests. Please try refreshing the page.</p>
                 }
                 {!isError && lateAssignments.length > 0 &&
-                    <CardSection
+                    <QuestSection
                         assignments={lateAssignments}
                         title='late'
+                        danger
                         householdId={householdId}
                         members={household?.members ?? []}
                     />
                 }
                 {!isError && todayAssignments.length > 0 &&
-                    <CardSection
+                    <QuestSection
                         assignments={todayAssignments}
                         title='today'
                         householdId={householdId}
@@ -98,7 +98,7 @@ function Quests() {
                     />
                 }
                 {!isError && otherAssignments.length > 0 &&
-                    <CardSection
+                    <QuestSection
                         assignments={otherAssignments}
                         title='future'
                         householdId={householdId}

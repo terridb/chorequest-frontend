@@ -1,4 +1,4 @@
-import type { AssignmentStrategy, Effort, Frequency } from './enums';
+import type {AssignmentStrategy, Effort, Frequency} from './enums';
 import type {SimpleUser} from "./user.ts";
 
 export interface Task {

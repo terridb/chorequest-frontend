@@ -3,7 +3,7 @@ import Quests from "./pages/quests/Quests.tsx";
 import Board from "./pages/board/Board.tsx";
 import Settings from "./pages/settings/Settings.tsx";
 import Lists from "./pages/lists/Lists.tsx";
-import Nav from "./components/nav/Nav.tsx";
+import Nav from "./components/ui/nav/Nav.tsx";
 import RequireAuth from "./auth/RequireAuth.tsx";
 import QuestDetails from "./pages/quest-details/QuestDetails.tsx";
 
