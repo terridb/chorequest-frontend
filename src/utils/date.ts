@@ -20,28 +20,32 @@ export function parseLocalDate(dateString: string): Date {
     return new Date(year, month - 1, day);
 }
 
+// Whole days from today until the due date; negative when it is overdue
+function daysUntil(dueDate: string): number {
+    const due = parseLocalDate(dueDate);
+    const today = startOfDay(new Date());
+    return Math.round((due.getTime() - today.getTime()) / MS_PER_DAY);
+}
+
 export function isDueDateToday(dueDate: string): boolean {
-    return startOfDay(new Date(dueDate)).getTime() === startOfDay(new Date()).getTime();
+    return daysUntil(dueDate) === 0;
 }
 
 export function isDueDatePast(dueDate: string): boolean {
-    return startOfDay(new Date(dueDate)).getTime() < startOfDay(new Date()).getTime();
+    return daysUntil(dueDate) < 0;
 }
 
 export function isDueDateFuture(dueDate: string): boolean {
-    return startOfDay(new Date(dueDate)).getTime() > startOfDay(new Date()).getTime();
+    return daysUntil(dueDate) > 0;
 }
 
 export function formatDueDate(dueDate: string): string {
-    const due = startOfDay(new Date(dueDate));
-    const today = startOfDay(new Date());
+    const days = daysUntil(dueDate);
 
-    const diffDays = Math.round((due.getTime() - today.getTime()) / MS_PER_DAY);
-
-    if (isDueDatePast(dueDate)) return `${Math.abs(diffDays)} day${Math.abs(diffDays) === 1 ? '' : 's'} late`;
-    if (diffDays === 0) return 'due today';
-    if (diffDays === 1) return 'due tomorrow';
-    return `due in ${diffDays} days`;
+    if (days < 0) return `${-days} day${days === -1 ? '' : 's'} late`;
+    if (days === 0) return 'due today';
+    if (days === 1) return 'due tomorrow';
+    return `due in ${days} days`;
 }
 
 // "Mon 14 Mar"

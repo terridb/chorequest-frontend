@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 export function useDelayedLoading(isLoading: boolean, delayMs = 200): boolean {
-    const [showSpinner, setShowSpinner] = useState(false);
+    const [isDelayOver, setIsDelayOver] = useState(false);
 
     useEffect(() => {
-        if (!isLoading) {
-            setShowSpinner(false);
-            return;
-        }
+        if (!isLoading) return;
 
-        const timeout = setTimeout(() => setShowSpinner(true), delayMs);
-        return () => clearTimeout(timeout);
+        const timeout = setTimeout(() => setIsDelayOver(true), delayMs);
+        return () => {
+            clearTimeout(timeout);
+            setIsDelayOver(false);
+        };
     }, [isLoading, delayMs]);
 
-    return showSpinner;
+    return isLoading && isDelayOver;
 }

@@ -3,18 +3,17 @@ import {type ReactNode, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
 import Button from "../button/Button.tsx";
 
-function BottomSheet({open, onClose, title, children}: { open: boolean, onClose: () => void, title: string, children: ReactNode }) {
+function BottomSheet({open, onClose, title, children}: {
+    open: boolean,
+    onClose: () => void,
+    title: string,
+    children: ReactNode
+}) {
     const [shouldRender, setShouldRender] = useState(open);
-    const [isClosing, setIsClosing] = useState(false);
 
-    useEffect(() => {
-        if (open) {
-            setShouldRender(true);
-            setIsClosing(false);
-        } else if (shouldRender) {
-            setIsClosing(true);
-        }
-    }, [open]);
+    // Mount as soon as it opens; after closing it stays mounted until the close animation has finished
+    if (open && !shouldRender) setShouldRender(true);
+    const isClosing = !open && shouldRender;
 
     useEffect(() => {
         if (!shouldRender) return;
@@ -40,10 +39,7 @@ function BottomSheet({open, onClose, title, children}: { open: boolean, onClose:
     if (!shouldRender) return null;
 
     const handlePanelAnimationEnd = () => {
-        if (isClosing) {
-            setShouldRender(false);
-            setIsClosing(false);
-        }
+        if (isClosing) setShouldRender(false);
     };
 
     return createPortal(

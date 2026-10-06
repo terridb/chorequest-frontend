@@ -11,13 +11,13 @@ function Nav() {
         <nav className='outer-container'>
             <ul className='nav-items'>
                 <li>
-                    <NavLink to="/" className={navItemClassName}>
+                    <NavLink to="/leaderboard" className={navItemClassName}>
                         <LeaderboardIcon className='nav-icon'/>
                         Board
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/shopping-list" className={navItemClassName}>
+                    <NavLink to="/lists" className={navItemClassName}>
                         <CartIcon className='nav-icon'/>
                         Lists
                     </NavLink>
