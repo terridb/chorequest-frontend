@@ -13,7 +13,7 @@ import Button from "../../components/button/Button.tsx";
 import {PlusIcon} from "../../components/icons/NavIcons.tsx";
 import {useState} from "react";
 import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
-import AddQuestForm from "../../components/add-quest-form/AddQuestForm.tsx";
+import QuestForm from "../../components/quest-form/QuestForm.tsx";
 import AddGoalForm from "../../components/add-goal-form/AddGoalForm.tsx";
 import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
 import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
@@ -121,7 +121,7 @@ function Quests() {
                 onClose={() => setIsAddQuestOpen(false)}
                 title='New Quest'
             >
-                {household && <AddQuestForm household={household} onCreated={() => setIsAddQuestOpen(false)}/>}
+                {household && <QuestForm household={household} onSaved={() => setIsAddQuestOpen(false)}/>}
             </BottomSheet>
             <Button className="add-button" onClick={() => setIsAddQuestOpen(true)}>
                 <PlusIcon className="add-button-icon"/>

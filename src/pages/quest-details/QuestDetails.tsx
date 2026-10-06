@@ -20,6 +20,9 @@ import {capitalize} from "../../utils/textUtils.ts";
 import type {Household, HouseholdMember} from "../../types/household.ts";
 import {useCompleteTask} from "../../hooks/useCompleteTask.ts";
 import {useGetTask} from "../../hooks/useGetTask.ts";
+import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
+import QuestForm from "../../components/quest-form/QuestForm.tsx";
+import {useState} from "react";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Single responsible person',
@@ -36,6 +39,7 @@ function determineMembers(task: Task, household: Household): HouseholdMember[] {
 function QuestDetails() {
     const {id: taskId} = useParams();
     const navigate = useNavigate();
+    const [isEditQuestOpen, setEditQuestOpen] = useState(false);
 
     const {data: task, isLoading: isTaskLoading, isError: isTaskError} = useGetTask(taskId);
     const {
@@ -79,6 +83,8 @@ function QuestDetails() {
     const isLate = isDueDatePast(assignment.dueDate);
     const members = determineMembers(task, household);
     const assignedMemberId = household.members.find(member => member.user.id === assignment.user.id)?.id;
+    // A solo quest always belongs to its responsible member, even while an assignment from before an edit is still open
+    const highlightedMemberId = task.strategy === 'SOLO' ? task.responsibleMemberId : assignedMemberId;
 
     const handleComplete = () => {
         if (!assignedMemberId) return;
@@ -95,7 +101,7 @@ function QuestDetails() {
                 toolbar={
                     <>
                         <Link to='/quests' className='header-back'>{'<'} Back</Link>
-                        <Button variant='dark' size='small'>Edit</Button>
+                        <Button variant='dark' size='small' onClick={() => setEditQuestOpen(true)}>Edit</Button>
                     </>
                 }
                 aside={
@@ -122,10 +128,17 @@ function QuestDetails() {
                         </div>
                     </LabeledGroup>
                     <LabeledGroup label='Rotation' hint={STRATEGY_HINTS[task.strategy]}>
-                        <MemberPicker members={members} value={assignedMemberId} decorative/>
+                        <MemberPicker members={members} value={highlightedMemberId} decorative/>
                     </LabeledGroup>
                 </section>
             </main>
+            <BottomSheet
+                open={isEditQuestOpen}
+                onClose={() => setEditQuestOpen(false)}
+                title='Edit quest'
+            >
+                <QuestForm household={household} task={task} onSaved={() => setEditQuestOpen(false)}/>
+            </BottomSheet>
             <footer className='action-bar quest-details-actions'>
                 {completeTask.isError &&
                     <p className='action-bar-error'>Couldn't complete this quest. Please try again.</p>

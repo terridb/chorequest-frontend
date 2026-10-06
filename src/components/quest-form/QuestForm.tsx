@@ -16,8 +16,8 @@ import Meter from "../meter/Meter.tsx";
 import {EFFORT_HINTS, EFFORT_LEVELS} from "../../utils/effort.ts";
 import {capitalize} from "../../utils/textUtils.ts";
 import MemberPicker from "../member-picker/MemberPicker.tsx";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {apiClient} from "../../api/client.ts";
+import {useCreateTask} from "../../hooks/useCreateTask.ts";
+import {useUpdateTask} from "../../hooks/useUpdateTask.ts";
 
 const ASSIGNMENT_OPTIONS = [
     {value: 'SOLO', label: 'One person'},
@@ -35,19 +35,37 @@ function getRepeatHint(frequency: Frequency): string {
     return formatFrequency(frequency);
 }
 
-function AddQuestForm({household, onCreated}: { household: Household, onCreated: () => void }) {
-    const {register, control, handleSubmit, setValue, formState: {errors, isValid}} = useForm<TaskInput>({
+function emptyTaskInput(household: Household): TaskInput {
+    return {
+        title: '',
+        description: '',
+        effort: 'NONE',
+        frequency: 'AS_NEEDED',
+        startingDate: toLocalDateString(new Date()),
+        alwaysSameDay: false,
+        strategy: 'SOLO',
+        responsibleMemberId: household.members[0]?.id,
+    };
+}
+
+function toTaskInput(task: Task): TaskInput {
+    return {
+        title: task.title,
+        description: task.description ?? '',
+        effort: task.effort,
+        frequency: task.frequency,
+        startingDate: task.startingDate,
+        alwaysSameDay: task.alwaysSameDay,
+        strategy: task.strategy,
+        responsibleMemberId: task.responsibleMemberId,
+    };
+}
+
+// Without a task the form creates a new quest, with a task it edits that quest
+function QuestForm({household, task, onSaved}: { household: Household, task?: Task, onSaved: () => void }) {
+    const {register, control, handleSubmit, setValue, formState: {errors, isValid, isDirty}} = useForm<TaskInput>({
         mode: 'onTouched',
-        defaultValues: {
-            title: '',
-            description: '',
-            effort: 'NONE',
-            frequency: 'AS_NEEDED',
-            startingDate: toLocalDateString(new Date()),
-            alwaysSameDay: false,
-            strategy: 'SOLO',
-            responsibleMemberId: household.members[0]?.id,
-        },
+        defaultValues: task ? toTaskInput(task) : emptyTaskInput(household),
     });
 
     const [frequency, startingDate, alwaysSameDay, effort, strategy] =
@@ -64,18 +82,16 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
     })) ?? [];
 
     const selectedPoints = efforts?.find(item => item.effort === effort)?.points ?? 0;
-    const queryClient = useQueryClient();
-
-    const createTask = useMutation({
-        mutationFn: (input: TaskInput) =>
-            apiClient.post<Task>(`/api/households/${household.id}/tasks`, input).then(res => res.data),
-        onSuccess: () => queryClient.invalidateQueries({queryKey: ["assignments", household.id]}),
-    });
+    const createTask = useCreateTask(household.id);
+    const updateTask = useUpdateTask(household.id);
+    const saveTask = task ? updateTask : createTask;
 
     const onSubmit = (data: TaskInput) => {
-        createTask.mutate(data, {
-            onSuccess: () => onCreated(),
-        });
+        if (task) {
+            updateTask.mutate({taskId: task.id, ...data}, {onSuccess: () => onSaved()});
+        } else {
+            createTask.mutate(data, {onSuccess: () => onSaved()});
+        }
     }
 
     if (!efforts) {
@@ -86,9 +102,13 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
     return (
         <Form
             onSubmit={handleSubmit(onSubmit)}
-            submitLabel={<>Post quest <span className='button-points'>+{selectedPoints}</span></>}
-            submitDisabled={!isValid || createTask.isPending}
-            error={createTask.isError ? 'Something went wrong posting your quest. Please try again.' : undefined}
+            submitLabel={task
+                ? 'Save changes'
+                : <>Post quest <span className='button-points'>+{selectedPoints}</span></>}
+            submitDisabled={!isValid || (task && !isDirty) || saveTask.isPending}
+            error={saveTask.isError
+                ? `Something went wrong ${task ? 'saving' : 'posting'} your quest. Please try again.`
+                : undefined}
         >
             <label className='form-label'>
                 Title
@@ -122,9 +142,9 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
                     frequency={frequency}
                     startingDate={startingDate}
                     alwaysSameDay={alwaysSameDay ?? false}
-                    onFrequencyChange={value => setValue('frequency', value)}
-                    onStartingDateChange={value => setValue('startingDate', value)}
-                    onAlwaysSameDayChange={value => setValue('alwaysSameDay', value)}
+                    onFrequencyChange={value => setValue('frequency', value, {shouldDirty: true})}
+                    onStartingDateChange={value => setValue('startingDate', value, {shouldDirty: true})}
+                    onAlwaysSameDayChange={value => setValue('alwaysSameDay', value, {shouldDirty: true})}
                 />
             </LabeledGroup>
 
@@ -163,4 +183,4 @@ function AddQuestForm({household, onCreated}: { household: Household, onCreated:
     );
 }
 
-export default AddQuestForm;
+export default QuestForm;
