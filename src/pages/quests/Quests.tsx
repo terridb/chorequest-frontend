@@ -6,7 +6,6 @@ import {apiClient} from "../../api/client.ts";
 import type {TaskAssignment} from "../../types/task.ts";
 import Spinner from "../../components/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
-import type {Household} from "../../types/household.ts";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/date.ts";
 import CardSection from "../../components/card-section/CardSection.tsx";
 import type {Goal} from "../../types/goal.ts";
@@ -16,6 +15,8 @@ import {useState} from "react";
 import BottomSheet from "../../components/bottom-sheet/BottomSheet.tsx";
 import AddQuestForm from "../../components/add-quest-form/AddQuestForm.tsx";
 import AddGoalForm from "../../components/add-goal-form/AddGoalForm.tsx";
+import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
+import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
 
 function Quests() {
     const householdId = '33333333-3333-3333-3333-333333333333';
@@ -23,17 +24,9 @@ function Quests() {
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
 
-    const {data: assignments, isLoading: isAssignmentsLoading, isError: isAssignmentsError} = useQuery({
-        queryKey: ["assignments", householdId],
-        queryFn: () =>
-            apiClient.get<TaskAssignment[]>(`/api/households/${householdId}/assignments/open`).then(res => res.data)
-    })
+    const {data: assignments, isError: isAssignmentsError, isLoading: isAssignmentsLoading} = useGetAssignments(householdId);
 
-    const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useQuery({
-        queryKey: ["household", householdId],
-        queryFn: () =>
-            apiClient.get<Household>(`/api/households/${householdId}`).then(res => res.data)
-    })
+    const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useGetHousehold(householdId);
 
     const {data: goal, isLoading: isGoalLoading, isError: isGoalError} = useQuery({
         queryKey: ["goal", householdId],
@@ -44,11 +37,6 @@ function Quests() {
     const isLoading = isAssignmentsLoading || isHouseholdLoading || isGoalLoading;
     const isError = isAssignmentsError || isHouseholdError;
     const showSpinner = useDelayedLoading(isLoading);
-
-    console.log('assignments: ', assignments)
-    console.log('household: ', household)
-    console.log('goal: ', goal)
-
 
     const filterLateAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
         return assignments.filter(item => isDueDatePast(item.dueDate));
