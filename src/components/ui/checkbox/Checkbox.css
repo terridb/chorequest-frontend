@@ -1,0 +1,37 @@
+.checkbox {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--checkbox-idle);
+    border-radius: var(--r-box);
+    background: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--surface);
+    cursor: pointer;
+}
+
+.checkbox:hover:not(:disabled) {
+    border-color: var(--teal);
+}
+
+.checkbox:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+}
+
+.checkbox:disabled {
+    cursor: default;
+}
+
+.checkbox--checked {
+    background-color: var(--teal);
+    border-color: var(--teal);
+}
+
+.checkbox-icon {
+    width: 24px;
+    height: 24px;
+}

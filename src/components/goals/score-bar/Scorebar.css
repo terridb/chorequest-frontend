@@ -1,0 +1,39 @@
+.score-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.score-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    width: 100%;
+}
+
+.score-bar-block {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 12px;
+    background-color: var(--teal);
+}
+
+.score-bar-block.inactive {
+    background-color: var(--ink-faded);
+}
+
+.score-bar-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.score-bar-points-current {
+    color: var(--teal);
+}
+
+.score-bar-points-goal {
+    color: var(--ink-muted);
+}

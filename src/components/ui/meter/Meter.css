@@ -1,0 +1,15 @@
+.meter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meter-square {
+    width: 6px;
+    height: 6px;
+    background: var(--checkbox-idle);
+}
+
+.meter-square.filled {
+    background: var(--ink);
+}

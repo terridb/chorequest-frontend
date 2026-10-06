@@ -1,0 +1,25 @@
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.setting-row-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 0;
+}
+
+.setting-row-title {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.setting-row-subtitle {
+    font-family: var(--font-ui);
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+}

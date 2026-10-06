@@ -1,0 +1,24 @@
+.inner-container.quest-details {
+    gap: var(--space-lg);
+}
+
+/* Fills the screen above the nav so the actions sit at the bottom, even when the content is short */
+.quest-details-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--nav-height));
+}
+
+.quest-details-actions {
+    position: sticky;
+    bottom: var(--nav-height);
+    margin-top: auto;
+    padding: var(--space-md) var(--space-page);
+    background-color: var(--bg);
+}
+
+.quest-details-status {
+    justify-content: center;
+    gap: var(--space-md);
+    min-height: 60vh;
+}

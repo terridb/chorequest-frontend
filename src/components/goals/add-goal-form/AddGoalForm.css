@@ -1,0 +1,36 @@
+.goal-points-input {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: var(--surface);
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--r-card);
+    font-family: var(--font-ui);
+    color: var(--ink-soft);
+    cursor: text;
+}
+
+.goal-points-input:focus-within {
+    outline: solid 1px var(--ink);
+}
+
+.form .goal-points-input input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-align: right;
+    font-family: var(--font-pixel);
+}
+
+.form .goal-points-input input:focus {
+    outline: none;
+}
+
+.goal-points-unit {
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}

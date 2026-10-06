@@ -1,0 +1,28 @@
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--r-box);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-pixel);
+    font-size: 0.9rem;
+    background-color: var(--avatar-color);
+    color: var(--surface);
+}
+
+/* Avatars in option cards stay grey until their card is selected */
+.option-card:not(.option-card--selected) .avatar {
+    filter: grayscale(100%);
+}
+
+.option-card:not(.option-card--selected) .avatar-fallback {
+    filter: none;
+    background-color: var(--border-soft);
+    color: var(--ink-soft);
+}
