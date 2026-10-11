@@ -8,10 +8,11 @@ import {useCompleteTask} from "../../../hooks/useCompleteTask.ts";
 import Checkbox from "../../ui/checkbox/Checkbox.tsx";
 import {Link} from "react-router";
 
-function QuestCard({item, householdId, memberId}: {
+function QuestCard({item, householdId, memberId, preview = false}: {
     item: TaskAssignment,
-    householdId: string,
-    memberId: string | undefined
+    householdId?: string,
+    memberId: string | undefined,
+    preview?: boolean
 }) {
     const isLate = item.dueDate ? isDueDatePast(item.dueDate) : false;
 
@@ -31,9 +32,13 @@ function QuestCard({item, householdId, memberId}: {
                     disabled={completeTask.isPending || !memberId}
                 />
                 <div className='quest-card-title'>
-                    <Link to={`/quests/${item.task.id}`} className='quest-card-link'>
+                    {preview ? (
                         <p className='quest-title'>{item.task.title}</p>
-                    </Link>
+                    ) : (
+                        <Link to={`/quests/${item.task.id}`} className='quest-card-link'>
+                            <p className='quest-title'>{item.task.title}</p>
+                        </Link>
+                    )}
                     <div className='quest-card-meta'>
                         <p>{formatFrequency(item.task.frequency)}</p>
                         <p>-</p>

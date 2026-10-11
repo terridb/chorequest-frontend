@@ -1,0 +1,14 @@
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.logo-small {
+    width: 32px;
+}
+
+.logo-name {
+    font-family: var(--font-pixel);
+    font-size: 1.17em;
+}

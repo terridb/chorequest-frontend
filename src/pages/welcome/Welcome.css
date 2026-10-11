@@ -1,0 +1,79 @@
+.welcome {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    background-color: var(--ink);
+    color: var(--surface);
+}
+
+.outer-container.welcome-main {
+    flex: 1;
+    justify-content: space-between;
+}
+
+.header-welcome {
+    position: static;
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+    text-align: center;
+    padding-bottom: var(--space-md);
+}
+
+.welcome p {
+    color: var(--ink-soft);
+}
+
+.welcome-content h1 {
+    font-size: 2rem;
+}
+
+.welcome-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.welcome-illustrations {
+    position: relative;
+    padding-top: var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.welcome-illustrations::before,
+.welcome-illustrations::after {
+    content: '';
+    position: absolute;
+    height: 48px;
+    border-radius: var(--r-card);
+}
+
+.welcome-illustrations::before {
+    top: 0;
+    left: var(--space-lg);
+    right: var(--space-lg);
+    background-color: color-mix(in srgb, var(--ink-faded) 60%, var(--ink));
+}
+
+.welcome-illustrations::after {
+    top: var(--space-md);
+    left: var(--space-sm);
+    right: var(--space-sm);
+    background-color: var(--ink-faded);
+}
+
+.welcome-illustrations .quest-card {
+    z-index: 1;
+}
