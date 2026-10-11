@@ -1,7 +1,7 @@
 import './LabeledGroup.css'
 import {type ReactNode, useId} from "react";
 
-function LabeledGroup({label, hint, children}: { label: string; hint?: string; children: ReactNode }) {
+function LabeledGroup({label, hint, children}: { label?: string; hint?: string; children: ReactNode }) {
     const labelId = useId();
 
     return (
