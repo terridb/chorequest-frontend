@@ -3,6 +3,9 @@ import {apiClient} from "../api/client.ts";
 import {useQuery} from "@tanstack/react-query";
 import type {User} from "../types/user.ts";
 
+// Set by the post-login Action in Auth0 from the first-name form shown after sign-up
+const FIRST_NAME_CLAIM = 'https://chorequest/first_name';
+
 function useCurrentUser() {
     const {isAuthenticated, user} = useAuth0();
 
@@ -10,7 +13,7 @@ function useCurrentUser() {
         queryKey: ["me"],
         queryFn: () =>
             apiClient.post<User>("/api/users/me", {
-                firstName: user?.given_name ?? user?.name,
+                firstName: user?.[FIRST_NAME_CLAIM] ?? user?.given_name ?? user?.name,
                 lastName: user?.family_name,
                 avatarUrl: user?.picture,
             }).then(res => res.data),
