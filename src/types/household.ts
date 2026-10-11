@@ -1,4 +1,4 @@
-import type {HouseholdType} from "./enums.ts";
+import type {HouseholdMemberRole, HouseholdType} from "./enums.ts";
 import type {SimpleUser} from "./user.ts";
 
 export interface Household {
@@ -15,6 +15,7 @@ export interface HouseholdMember {
     id: string;
     user: SimpleUser;
     points: number;
+    role: HouseholdMemberRole;
 }
 
 export interface HouseholdInput {
