@@ -1,0 +1,18 @@
+.join-household header h1 {
+    font-size: 2rem;
+}
+
+.join-household header p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.outer-container.join-household {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.join-household > p {
+    color: var(--ink-soft);
+}

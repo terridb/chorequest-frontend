@@ -4,7 +4,7 @@ import type {SimpleUser} from "./user.ts";
 export interface Household {
     id: string;
     name: string;
-    householdType: HouseholdType;
+    type: HouseholdType;
     photoUrl: string;
     city: string;
     zipcode: string;
