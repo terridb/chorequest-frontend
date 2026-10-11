@@ -126,3 +126,21 @@ export function PlusIcon(props: SVGProps<SVGSVGElement>) {
         </PixelIcon>
     );
 }
+
+export function CrossIcon(props: SVGProps<SVGSVGElement>) {
+    return (
+        <PixelIcon {...props}>
+            <rect x="2" y="2" width="2" height="1"/>
+            <rect x="8" y="2" width="2" height="1"/>
+            <rect x="3" y="3" width="2" height="1"/>
+            <rect x="7" y="3" width="2" height="1"/>
+            <rect x="4" y="4" width="4" height="1"/>
+            <rect x="5" y="5" width="2" height="2"/>
+            <rect x="4" y="7" width="4" height="1"/>
+            <rect x="3" y="8" width="2" height="1"/>
+            <rect x="7" y="8" width="2" height="1"/>
+            <rect x="2" y="9" width="2" height="1"/>
+            <rect x="8" y="9" width="2" height="1"/>
+        </PixelIcon>
+    );
+}

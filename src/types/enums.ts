@@ -32,3 +32,5 @@ export type HouseholdType = 'COUPLE' | 'FAMILY' | 'SHARED';
 export type GoalStatus = 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
 
 export type HouseholdMemberRole = 'ADMIN' | 'MEMBER';
+
+export type HouseholdInviteStatus = 'PENDING' | 'REVOKED';
