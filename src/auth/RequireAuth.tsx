@@ -1,15 +1,13 @@
 import {type ReactNode, useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import Spinner from "../components/ui/spinner/Spinner.tsx";
-import useApiAuth from "./useApiAuth.ts";
-import useProvisionUser from "./useProvisionUser.ts";
+import useCurrentUser from "./useCurrentUser.ts";
 import "./RequireAuth.css";
 
 function RequireAuth({children}: { children: ReactNode }) {
     const {isAuthenticated, isLoading, loginWithRedirect} = useAuth0();
 
-    useApiAuth();
-    useProvisionUser();
+    const {data: me, isError} = useCurrentUser();
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
@@ -19,7 +17,15 @@ function RequireAuth({children}: { children: ReactNode }) {
         }
     }, [isLoading, isAuthenticated, loginWithRedirect]);
 
-    if (!isAuthenticated) {
+    if (isError) {
+        return (
+            <div className="auth-loading">
+                <p>Couldn't load your account. Please refresh the page.</p>
+            </div>
+        );
+    }
+
+    if (!isAuthenticated || !me) {
         return (
             <div className="auth-loading">
                 <Spinner/>

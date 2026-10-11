@@ -16,9 +16,10 @@ import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
 import AddGoalForm from "../../components/goals/add-goal-form/AddGoalForm.tsx";
 import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
 import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
+import {useCurrentHouseholdId} from "../../hooks/useCurrentHouseholdId.ts";
 
 function Quests() {
-    const householdId = '33333333-3333-3333-3333-333333333333';
+    const householdId = useCurrentHouseholdId();
 
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
@@ -36,6 +37,10 @@ function Quests() {
     const isLoading = isAssignmentsLoading || isHouseholdLoading || isGoalLoading;
     const isError = isAssignmentsError || isHouseholdError;
     const showSpinner = useDelayedLoading(isLoading);
+
+    if (!householdId) {
+        return <p>You're not part of a household yet.</p>
+    }
 
     const filterLateAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
         return assignments.filter(item => isDueDatePast(item.dueDate));

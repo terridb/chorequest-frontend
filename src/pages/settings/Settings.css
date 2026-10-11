@@ -1,0 +1,50 @@
+.settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    gap: var(--space-lg);
+}
+
+.settings-status {
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    text-align: center;
+}
+
+.settings-action {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.settings-error {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--red);
+}
+
+.role-badge {
+    flex-shrink: 0;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+}
+
+.role-badge--admin {
+    color: var(--blue);
+}
+
+.role-badge--away {
+    color: var(--red);
+}
+
+.invite-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+}

@@ -24,6 +24,18 @@
     box-shadow: var(--shadow-btn-secondary);
 }
 
+.button--danger {
+    background: var(--red);
+    box-shadow: var(--shadow-btn-danger);
+}
+
+.button--danger-secondary {
+    background: var(--red-tint);
+    color: var(--red);
+    border: var(--border-w) solid var(--red);
+    box-shadow: var(--shadow-btn-danger-secondary);
+}
+
 .button--ghost {
     background: transparent;
     color: var(--ink-soft);

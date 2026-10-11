@@ -23,7 +23,8 @@
     --teal-tint: #e9f5f2;
     --teal-line: #bfe0d9;
     --teal-text: #5d8378;
-    --red: #cf3350; /* late */
+    --red: #cf3350; /* late, danger button */
+    --red-deep: #a3223b; /* danger button hard shadow */
     --red-tint: #fdf1f3;
     --red-line: #f6d8de;
 
@@ -36,6 +37,8 @@
     --shadow-card-late: 0 3px 0 var(--red);
     --shadow-btn: 0 3px 0 var(--blue-deep);
     --shadow-btn-secondary: 0 3px 0 var(--teal-deep);
+    --shadow-btn-danger: 0 3px 0 var(--red-deep);
+    --shadow-btn-danger-secondary: 0 3px 0 var(--red-line);
 
     /* spacing */
     --space-xs: 4px;
@@ -48,7 +51,6 @@
 }
 
 body {
-    padding-bottom: var(--nav-height);
     background-color: var(--bg);
 }
 
@@ -101,6 +103,10 @@ ul {
     flex-direction: column;
     align-items: center;
     padding: var(--space-page);
+}
+
+.with-nav {
+    padding-bottom: var(--nav-height);
 }
 
 .inner-container {

@@ -5,6 +5,13 @@
     gap: var(--space-md);
 }
 
+.setting-row-main {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    min-width: 0;
+}
+
 .setting-row-text {
     display: flex;
     flex-direction: column;
@@ -22,4 +29,12 @@
     font-family: var(--font-ui);
     color: var(--ink-soft);
     font-size: 0.8rem;
+}
+
+.setting-row--large .setting-row-title {
+    font-size: 1.15rem;
+}
+
+.setting-row--large .setting-row-subtitle {
+    font-size: 0.95rem;
 }
