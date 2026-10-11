@@ -51,7 +51,6 @@
 }
 
 body {
-    padding-bottom: var(--nav-height);
     background-color: var(--bg);
 }
 
@@ -104,6 +103,10 @@ ul {
     flex-direction: column;
     align-items: center;
     padding: var(--space-page);
+}
+
+.with-nav {
+    padding-bottom: var(--nav-height);
 }
 
 .inner-container {

@@ -10,6 +10,7 @@ import {features} from "./config/features.ts";
 import Welcome from "./pages/welcome/Welcome.tsx";
 import JoinHousehold from "./pages/join-household/JoinHousehold.tsx";
 import useApiAuth from "./auth/useApiAuth.ts";
+import RedirectIfSignedIn from "./auth/RedirectIfSignedIn.tsx";
 import RedirectIfInHousehold from "./auth/RedirectIfInHousehold.tsx";
 
 function App() {
@@ -18,22 +19,32 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={
-                <RedirectIfInHousehold>
-                    <Welcome/>
-                </RedirectIfInHousehold>
-            }/>
+                                 <RedirectIfSignedIn>
+                                    <Welcome/>
+                                </RedirectIfSignedIn>
+                            }/>
             <Route element={
-                <RequireAuth>
-                    <Outlet/>
-                    <Nav/>
-                </RequireAuth>
-            }>
-                <Route path="/quests" element={<Quests/>}/>
-                <Route path="/quests/:id" element={<QuestDetails/>}/>
-                {features.ranking && <Route path="/leaderboard" element={<Board/>}/>}
-                <Route path="/settings" element={<Settings/>}/>
-                {features.shoppingLists && <Route path="/lists" element={<Lists/>}/>}
-                <Route path="/join-household" element={<JoinHousehold/>}/>
+                        <RequireAuth>
+                           <Outlet/>
+                       </RequireAuth>
+                   }>
+                <Route element={
+                            <div className='with-nav'>
+                               <Outlet/>
+                               <Nav/>
+                           </div>
+                       }>
+                    <Route path="/quests" element={<Quests/>}/>
+                    <Route path="/quests/:id" element={<QuestDetails/>}/>
+                    {features.ranking && <Route path="/leaderboard" element={<Board/>}/>}
+                    <Route path="/settings" element={<Settings/>}/>
+                    {features.shoppingLists && <Route path="/lists" element={<Lists/>}/>}
+                </Route>
+                <Route path="/join-household" element={
+                                                   <RedirectIfInHousehold>
+                                                      <JoinHousehold/>
+                                                  </RedirectIfInHousehold>
+                                              }/>
             </Route>
         </Routes>
     )
