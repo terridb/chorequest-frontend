@@ -43,21 +43,27 @@ function Quests() {
     }
 
     const filterLateAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
-        return assignments.filter(item => isDueDatePast(item.dueDate));
+        return assignments.filter(item => item.dueDate !== null && isDueDatePast(item.dueDate));
     }
 
     const filterTodayAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
-        return assignments.filter(item => isDueDateToday(item.dueDate));
+        return assignments.filter(item => item.dueDate !== null && isDueDateToday(item.dueDate));
     }
 
     const filterOtherAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
-        return assignments.filter(item => isDueDateFuture(item.dueDate));
+        return assignments.filter(item => item.dueDate !== null && isDueDateFuture(item.dueDate));
+    }
+
+    const filterAnytimeAssignments = (assignments: TaskAssignment[]): TaskAssignment[] => {
+        return assignments.filter(item => item.dueDate === null);
     }
 
     const lateAssignments = assignments ? filterLateAssignments(assignments) : [];
     const todayAssignments = assignments ? filterTodayAssignments(assignments) : [];
     const otherAssignments = assignments ? filterOtherAssignments(assignments) : [];
-    const hasAssignments = lateAssignments.length > 0 || todayAssignments.length > 0 || otherAssignments.length > 0;
+    const anytimeAssignments = assignments ? filterAnytimeAssignments(assignments) : [];
+    const hasAssignments = lateAssignments.length > 0 || todayAssignments.length > 0
+        || otherAssignments.length > 0 || anytimeAssignments.length > 0;
 
     const calculatePointsToGo = (goal: Goal): number => {
         return goal.goalPoints - goal.currentPoints;
@@ -107,6 +113,14 @@ function Quests() {
                     <QuestSection
                         assignments={otherAssignments}
                         title='future'
+                        householdId={householdId}
+                        members={household?.members ?? []}
+                    />
+                }
+                {!isError && anytimeAssignments.length > 0 &&
+                    <QuestSection
+                        assignments={anytimeAssignments}
+                        title='anytime'
                         householdId={householdId}
                         members={household?.members ?? []}
                     />

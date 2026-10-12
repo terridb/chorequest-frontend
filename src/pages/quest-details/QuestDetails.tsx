@@ -86,7 +86,7 @@ function QuestDetails() {
         );
     }
 
-    const isLate = isDueDatePast(assignment.dueDate);
+    const isLate = assignment.dueDate !== null && isDueDatePast(assignment.dueDate);
     const members = determineMembers(task, household);
     const assignedMemberId = household.members.find(member => member.user.id === assignment.user.id)?.id;
     // A solo quest always belongs to its responsible member, even while an assignment from before an edit is still open
@@ -128,7 +128,7 @@ function QuestDetails() {
                 }
             >
                 <SectionTitle danger={isLate}>
-                    {formatDueDate(assignment.dueDate)}
+                    {assignment.dueDate !== null ? formatDueDate(assignment.dueDate) : 'No due date'}
                 </SectionTitle>
             </Header>
             <main className='outer-container'>
