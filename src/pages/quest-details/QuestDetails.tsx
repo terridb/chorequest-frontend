@@ -24,6 +24,8 @@ import {useGetTask} from "../../hooks/useGetTask.ts";
 import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
 import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
 import {useState} from "react";
+import {useDeleteTask} from "../../hooks/useDeleteTask.ts";
+import {getErrorMessage} from "../../utils/error.ts";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Single responsible person',
@@ -54,6 +56,7 @@ function QuestDetails() {
         isError: isHouseholdError
     } = useGetHousehold(task?.householdId);
     const completeTask = useCompleteTask(task?.householdId);
+    const deleteTask = useDeleteTask(task?.householdId);
 
     const isLoading = isTaskLoading || isAssignmentsLoading || isHouseholdLoading;
     const isError = isTaskError || isAssignmentsError || isHouseholdError;
@@ -93,6 +96,11 @@ function QuestDetails() {
             {assignmentId: assignment.id, completedByMemberId: assignedMemberId},
             {onSuccess: () => navigate('/quests')},
         );
+    }
+
+    const handleDelete = () => {
+        if (deleteTask.isPending) return;
+        deleteTask.mutate(task.id, {onSuccess: () => navigate('/quests')});
     }
 
     return (
@@ -141,6 +149,20 @@ function QuestDetails() {
                 <QuestForm household={household} task={task} onSaved={() => setEditQuestOpen(false)}/>
             </BottomSheet>
             <footer className='action-bar quest-details-actions'>
+                {deleteTask.isError &&
+                    <p className='action-bar-error'>
+                        {getErrorMessage(deleteTask.error, "Couldn't delete this quest. Please try again.")}
+                    </p>
+                }
+                <Button
+                    variant='danger-secondary'
+                    type='button'
+                    size='large'
+                    onClick={handleDelete}
+                    disabled={deleteTask.isPending}
+                >
+                    {deleteTask.isPending ? 'Deleting...' : 'Delete quest'}
+                </Button>
                 {completeTask.isError &&
                     <p className='action-bar-error'>Couldn't complete this quest. Please try again.</p>
                 }
