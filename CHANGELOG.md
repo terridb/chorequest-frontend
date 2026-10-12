@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/terridb/chorequest-frontend/compare/chorequest-frontend-v0.2.0...chorequest-frontend-v0.3.0) (2026-10-12)
+
+
+### Features
+
+* added deleting your account and confirmations before deleting data ([93e8819](https://github.com/terridb/chorequest-frontend/commit/93e8819b58c0b100b5cc5fd51e53296ead4aee14))
+* added deleting your account and confirmations before deleting data ([b6a0c10](https://github.com/terridb/chorequest-frontend/commit/b6a0c10dc6fd04e629b4a924b675ee5238c8bc36))
+
 ## [0.2.0](https://github.com/terridb/chorequest-frontend/compare/chorequest-frontend-v0.1.0...chorequest-frontend-v0.2.0) (2026-10-12)
 
 
