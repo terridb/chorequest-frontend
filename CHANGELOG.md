@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/terridb/chorequest-frontend/compare/v0.4.0...v0.4.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* showed as needed quests without a due date in an anytime section instead of crashing ([b1170bd](https://github.com/terridb/chorequest-frontend/commit/b1170bd967990519d14b77794b8b840f30e3142e))
+* showed as needed quests without a due date in an anytime section… ([4178992](https://github.com/terridb/chorequest-frontend/commit/417899273387e68883995392e57c1f944fa142ab))
+
 ## [0.4.0](https://github.com/terridb/chorequest-frontend/compare/v0.3.0...v0.4.0) (2026-10-12)
 
 
