@@ -12,6 +12,7 @@ import JoinHousehold from "./pages/join-household/JoinHousehold.tsx";
 import useApiAuth from "./auth/useApiAuth.ts";
 import RedirectIfSignedIn from "./auth/RedirectIfSignedIn.tsx";
 import RedirectIfInHousehold from "./auth/RedirectIfInHousehold.tsx";
+import NotFound from "./pages/not-found/NotFound.tsx";
 
 function App() {
     useApiAuth();
@@ -46,6 +47,7 @@ function App() {
                                                   </RedirectIfInHousehold>
                                               }/>
             </Route>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
     )
 }
