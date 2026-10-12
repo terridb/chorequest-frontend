@@ -5,6 +5,7 @@ import QuestCard from "../../components/quests/quest-card/QuestCard.tsx";
 import type {TaskAssignment} from "../../types/task.ts";
 import {toLocalDateString} from "../../utils/date.ts";
 import {useAuth0} from "@auth0/auth0-react";
+import {Link} from "react-router";
 
 const today = toLocalDateString(new Date());
 
@@ -67,6 +68,7 @@ function Welcome() {
                         Log in
                     </Button>
                     <p>Got an invite code? Sign up to enter.</p>
+                    <p><Link to='/privacy' className='welcome-privacy'>Privacy</Link></p>
                 </div>
             </main>
         </div>
