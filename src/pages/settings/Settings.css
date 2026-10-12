@@ -42,3 +42,7 @@
     gap: var(--space-xs);
     flex-shrink: 0;
 }
+
+.settings-footer a {
+    color: inherit;
+}

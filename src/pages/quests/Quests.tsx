@@ -57,6 +57,7 @@ function Quests() {
     const lateAssignments = assignments ? filterLateAssignments(assignments) : [];
     const todayAssignments = assignments ? filterTodayAssignments(assignments) : [];
     const otherAssignments = assignments ? filterOtherAssignments(assignments) : [];
+    const hasAssignments = lateAssignments.length > 0 || todayAssignments.length > 0 || otherAssignments.length > 0;
 
     const calculatePointsToGo = (goal: Goal): number => {
         return goal.goalPoints - goal.currentPoints;
@@ -80,7 +81,7 @@ function Quests() {
                 )}
 
             </Header>
-            <main className="quest-board-main outer-container">
+            <main className={`quest-board-main outer-container ${isError || !hasAssignments ? "centered" : ""}`}>
                 {showSpinner && <Spinner/>}
                 {isError && !isLoading &&
                     <p>Something went wrong loading your quests. Please try refreshing the page.</p>
@@ -110,7 +111,7 @@ function Quests() {
                         members={household?.members ?? []}
                     />
                 }
-                {!isError && otherAssignments.length <= 0 && lateAssignments.length <= 0 && todayAssignments.length <= 0 && (
+                {!isError && !isLoading && !hasAssignments && (
                     <p>No assignments added yet.</p>
                 )}
             </main>

@@ -5,9 +5,12 @@
 .quest-board-main {
     display: flex;
     align-items: center;
-    justify-content: center;
     min-height: 60vh;
     gap: var(--space-xl);
+}
+
+.quest-board-main.centered {
+    justify-content: center;
 }
 
 .set-goal-button {

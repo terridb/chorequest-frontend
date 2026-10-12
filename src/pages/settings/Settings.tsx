@@ -9,7 +9,7 @@ import {capitalize} from "../../utils/text.ts";
 import Avatar from "../../components/ui/avatar/Avatar.tsx";
 import './Settings.css'
 import {features} from "../../config/features.ts";
-import {Navigate, useNavigate} from "react-router";
+import {Link, Navigate, useNavigate} from "react-router";
 import {useLeaveHousehold} from "../../hooks/useLeaveHousehold.ts";
 import Spinner from "../../components/ui/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
@@ -293,8 +293,8 @@ function Settings() {
                     ? getErrorMessage(deleteAccount.error, "Couldn't delete your account. Please try again.")
                     : undefined}
             />
-            <footer className='outer-container'>
-                <p>ChoreQuest v{__APP_VERSION__}</p>
+            <footer className='outer-container settings-footer'>
+                <p>ChoreQuest v{__APP_VERSION__} · <Link to='/privacy'>Privacy</Link></p>
             </footer>
         </div>
     );
