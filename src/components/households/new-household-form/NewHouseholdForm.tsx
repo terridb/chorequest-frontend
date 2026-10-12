@@ -42,6 +42,7 @@ function NewHouseholdForm({onCreated}: { onCreated: () => void }) {
             type: data.type,
             city: data.city?.trim() || undefined,
             zipcode: data.zipcode?.trim() || undefined,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }, {
             onSuccess: () => onCreated(),
         });

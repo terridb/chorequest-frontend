@@ -1,0 +1,61 @@
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+.outer-container.not-found {
+    flex: 1;
+    justify-content: center;
+    padding-bottom: 20vh;
+    text-align: center;
+}
+
+.not-found-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 26px);
+    grid-auto-rows: 26px;
+    gap: 4px;
+    margin-bottom: var(--space-xl);
+}
+
+.not-found-tile {
+    border-radius: var(--r-box);
+    background-color: var(--border);
+}
+
+.not-found-tile--path {
+    background-color: transparent;
+    border: var(--border-w) dashed var(--checkbox-idle);
+}
+
+.not-found-tile--start {
+    background-color: var(--teal);
+}
+
+.not-found-tile--end {
+    background-color: var(--blue);
+}
+
+.not-found-code {
+    font-family: var(--font-pixel);
+    font-size: 4.5rem;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: var(--space-xl);
+}
+
+.not-found h1 {
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: var(--space-sm);
+}
+
+.not-found-description {
+    max-width: 340px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
