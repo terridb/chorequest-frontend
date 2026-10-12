@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release please
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release PR or release
+        id: release
+        uses: googleapis/release-please-action@v5
+      - name: Deploy to Render
+        if: ${{ steps.release.outputs.release_created }}
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
