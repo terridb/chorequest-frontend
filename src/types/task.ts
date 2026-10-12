@@ -19,7 +19,7 @@ export interface TaskAssignment {
     id: string;
     task: Task;
     user: SimpleUser;
-    dueDate: string;
+    dueDate: string | null;
 }
 
 export interface TaskCompletion {
