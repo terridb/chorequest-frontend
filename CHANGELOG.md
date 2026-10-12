@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/terridb/chorequest-frontend/compare/v0.3.0...v0.4.0) (2026-10-12)
+
+
+### Features
+
+* added privacy page with links on welcome and settings ([c88120a](https://github.com/terridb/chorequest-frontend/commit/c88120a7d4a69c58fecc7c45a684093254c56236))
+
+
+### Bug Fixes
+
+* only center quest board content when there are no quests ([2b18bd5](https://github.com/terridb/chorequest-frontend/commit/2b18bd5db06e6b7c4dd169c78aa398435abfbd64))
+
 ## [0.3.0](https://github.com/terridb/chorequest-frontend/compare/chorequest-frontend-v0.2.0...chorequest-frontend-v0.3.0) (2026-10-12)
 
 
