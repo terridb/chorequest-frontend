@@ -20,6 +20,10 @@ import type {HouseholdInvite} from "../../types/invite.ts";
 import {formatDayAndMonth} from "../../utils/date.ts";
 import {useState} from "react";
 import {CrossIcon} from "../../components/ui/icons/NavIcons.tsx";
+import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
+import {useDeleteAccount} from "../../hooks/useDeleteAccount.ts";
+
+type ConfirmAction = 'invite' | 'leave' | 'account';
 
 function Settings() {
     const {logout} = useAuth0();
@@ -42,6 +46,8 @@ function Settings() {
 
     const navigate = useNavigate();
     const leaveHousehold = useLeaveHousehold(household?.id);
+    const deleteAccount = useDeleteAccount();
+    const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
 
     const isAdmin = member?.role === 'ADMIN';
 
@@ -81,6 +87,28 @@ function Settings() {
         if (!member || leaveHousehold.isPending) return;
         leaveHousehold.mutate(member.id, {onSuccess: () => navigate('/join-household')});
     }
+
+    const handleDeleteInvite = () => {
+        if (!currentInvite || deleteInvite.isPending) return;
+        deleteInvite.mutate(currentInvite, {onSuccess: () => setConfirmAction(null)});
+    }
+
+    const handleDeleteAccount = () => {
+        if (deleteAccount.isPending) return;
+        deleteAccount.mutate(
+            {userId: me.id, memberId: member?.id},
+            {onSuccess: () => logout({logoutParams: {returnTo: window.location.origin}})},
+        );
+    }
+
+    const handleCloseConfirm = () => {
+        setConfirmAction(null);
+        deleteInvite.reset();
+        leaveHousehold.reset();
+        deleteAccount.reset();
+    }
+
+    const householdName = household?.name ?? 'your house';
 
     return (
         <div>
@@ -167,9 +195,7 @@ function Settings() {
                                 <div className='panel'>
                                     <SettingRow
                                         title={currentInvite.code}
-                                        subtitle={deleteInvite.isError
-                                            ? getErrorMessage(deleteInvite.error, "Couldn't delete the invite. Please try again.")
-                                            : `Expires ${formatDayAndMonth(new Date(currentInvite.expiresAt))}`}
+                                        subtitle={`Expires ${formatDayAndMonth(new Date(currentInvite.expiresAt))}`}
                                     >
                                         <div className='invite-actions'>
                                             <Button
@@ -184,8 +210,7 @@ function Settings() {
                                                 variant='ghost'
                                                 type='button'
                                                 size='small'
-                                                disabled={deleteInvite.isPending}
-                                                onClick={() => deleteInvite.mutate(currentInvite)}
+                                                onClick={() => setConfirmAction('invite')}
                                             >
                                                 <CrossIcon className='button-icon'/>
                                             </Button>
@@ -200,15 +225,10 @@ function Settings() {
                                     variant='danger-secondary'
                                     type='button'
                                     size='large'
-                                    onClick={handleLeave}
+                                    onClick={() => setConfirmAction('leave')}
                                 >
-                                    {leaveHousehold.isPending ? 'Leaving...' : 'Leave house'}
+                                    Leave house
                                 </Button>
-                                {leaveHousehold.isError &&
-                                    <p className='settings-error'>
-                                        {getErrorMessage(leaveHousehold.error, "Couldn't leave the household. Please try again.")}
-                                    </p>
-                                }
                             </div>
                         }
                     </div>
@@ -226,6 +246,7 @@ function Settings() {
                                 variant='danger'
                                 type='button'
                                 size='large'
+                                onClick={() => setConfirmAction('account')}
                             >
                                 Delete account
                             </Button>
@@ -233,6 +254,45 @@ function Settings() {
                     </LabeledGroup>
                 </section>
             </main>
+            <ConfirmSheet
+                open={confirmAction === 'invite'}
+                onClose={handleCloseConfirm}
+                title='Delete invite'
+                message="The code stops working straight away, so nobody can use it to join anymore."
+                confirmLabel='Delete invite'
+                pendingLabel='Deleting...'
+                onConfirm={handleDeleteInvite}
+                isPending={deleteInvite.isPending}
+                error={deleteInvite.isError
+                    ? getErrorMessage(deleteInvite.error, "Couldn't delete the invite. Please try again.")
+                    : undefined}
+            />
+            <ConfirmSheet
+                open={confirmAction === 'leave'}
+                onClose={handleCloseConfirm}
+                title='Leave house'
+                message={`Your points stay in ${householdName} and your quests are passed on to your housemates. You'll need a new invite to join again.`}
+                confirmLabel='Leave house'
+                pendingLabel='Leaving...'
+                onConfirm={handleLeave}
+                isPending={leaveHousehold.isPending}
+                error={leaveHousehold.isError
+                    ? getErrorMessage(leaveHousehold.error, "Couldn't leave the household. Please try again.")
+                    : undefined}
+            />
+            <ConfirmSheet
+                open={confirmAction === 'account'}
+                onClose={handleCloseConfirm}
+                title='Delete account'
+                message={`You'll leave ${householdName} and your profile and login will be deleted. This can't be undone.`}
+                confirmLabel='Delete account'
+                pendingLabel='Deleting...'
+                onConfirm={handleDeleteAccount}
+                isPending={deleteAccount.isPending}
+                error={deleteAccount.isError
+                    ? getErrorMessage(deleteAccount.error, "Couldn't delete your account. Please try again.")
+                    : undefined}
+            />
             <footer className='outer-container'>
                 <p>ChoreQuest v{__APP_VERSION__}</p>
             </footer>

@@ -3,5 +3,5 @@ export const features = {
     shoppingLists: false,
     ranking: false,
     removeOtherUsers: false,
-    deleteAccount: false,
+    deleteAccount: true,
 }

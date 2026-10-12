@@ -26,6 +26,7 @@ import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
 import {useState} from "react";
 import {useDeleteTask} from "../../hooks/useDeleteTask.ts";
 import {getErrorMessage} from "../../utils/error.ts";
+import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Single responsible person',
@@ -43,6 +44,7 @@ function QuestDetails() {
     const {id: taskId} = useParams();
     const navigate = useNavigate();
     const [isEditQuestOpen, setEditQuestOpen] = useState(false);
+    const [isDeleteQuestOpen, setDeleteQuestOpen] = useState(false);
 
     const {data: task, isLoading: isTaskLoading, isError: isTaskError} = useGetTask(taskId);
     const {
@@ -103,6 +105,11 @@ function QuestDetails() {
         deleteTask.mutate(task.id, {onSuccess: () => navigate('/quests')});
     }
 
+    const handleCloseDelete = () => {
+        setDeleteQuestOpen(false);
+        deleteTask.reset();
+    }
+
     return (
         <div className='quest-details-page'>
             <Header
@@ -148,20 +155,27 @@ function QuestDetails() {
             >
                 <QuestForm household={household} task={task} onSaved={() => setEditQuestOpen(false)}/>
             </BottomSheet>
+            <ConfirmSheet
+                open={isDeleteQuestOpen}
+                onClose={handleCloseDelete}
+                title='Delete quest'
+                message={`${task.title} will be deleted for everyone in your house. This can't be undone.`}
+                confirmLabel='Delete quest'
+                pendingLabel='Deleting...'
+                onConfirm={handleDelete}
+                isPending={deleteTask.isPending}
+                error={deleteTask.isError
+                    ? getErrorMessage(deleteTask.error, "Couldn't delete this quest. Please try again.")
+                    : undefined}
+            />
             <footer className='action-bar quest-details-actions'>
-                {deleteTask.isError &&
-                    <p className='action-bar-error'>
-                        {getErrorMessage(deleteTask.error, "Couldn't delete this quest. Please try again.")}
-                    </p>
-                }
                 <Button
                     variant='danger-secondary'
                     type='button'
                     size='large'
-                    onClick={handleDelete}
-                    disabled={deleteTask.isPending}
+                    onClick={() => setDeleteQuestOpen(true)}
                 >
-                    {deleteTask.isPending ? 'Deleting...' : 'Delete quest'}
+                    Delete quest
                 </Button>
                 {completeTask.isError &&
                     <p className='action-bar-error'>Couldn't complete this quest. Please try again.</p>
