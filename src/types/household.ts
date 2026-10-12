@@ -8,6 +8,7 @@ export interface Household {
     photoUrl: string;
     city: string;
     zipcode: string;
+    timeZone: string;
     members: HouseholdMember[];
 }
 
@@ -24,4 +25,5 @@ export interface HouseholdInput {
     photo?: File;
     city?: string;
     zipcode?: string;
+    timeZone?: string;
 }
