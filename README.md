@@ -6,7 +6,8 @@ Web app for ChoreQuest, built with React, TypeScript and Vite. The API lives in
 ChoreQuest turns household chores into quests. Housemates take turns on recurring tasks, earn points for every quest
 they complete and work together towards a shared house goal.
 
-Live at [chorequest-g3c2.onrender.com](https://chorequest-g3c2.onrender.com).
+Live at [chorequest-g3c2.onrender.com](https://chorequest-g3c2.onrender.com). The app is currently only designed for
+mobile, so open it on a phone or in your browser's mobile view for the best experience.
 
 <p>
   <img src="docs/pictures/board.png" alt="Quest board" width="24%">
@@ -29,7 +30,7 @@ Requires Node.js 22 or newer.
 3. Fill in `.env`:
 
    | Variable               | Value                                                     |
-   |------------------------|-----------------------------------------------------------|
+      |------------------------|-----------------------------------------------------------|
    | `VITE_API_BASE_URL`    | `http://localhost:8080`                                   |
    | `VITE_AUTH0_DOMAIN`    | `chore-quest.eu.auth0.com`                                |
    | `VITE_AUTH0_CLIENT_ID` | Client ID of the SPA application in the Auth0 dashboard   |
@@ -39,19 +40,20 @@ Requires Node.js 22 or newer.
 
 ## Scripts
 
-| Command           | Description                                       |
-|-------------------|---------------------------------------------------|
-| `npm run dev`     | Dev server with hot reload                        |
-| `npm run build`   | Type checks and builds into `dist`                |
-| `npm run preview` | Serves the production build locally               |
-| `npm run lint`    | Runs ESLint                                       |
+| Command           | Description                         |
+|-------------------|-------------------------------------|
+| `npm run dev`     | Dev server with hot reload          |
+| `npm run build`   | Type checks and builds into `dist`  |
+| `npm run preview` | Serves the production build locally |
+| `npm run lint`    | Runs ESLint                         |
 
 To only type check, use `npx tsc -b --noEmit`. Plain `tsc --noEmit` checks nothing, because the project uses
 TypeScript project references.
 
 ## Workflow
 
-- Every change goes through a pull request on a branch named after the type of change (`feature/...`, `fix/...`, `chore/...` etc.), and CI lints and builds it.
+- Every change goes through a pull request on a branch named after the type of change (`feature/...`, `fix/...`,
+  `chore/...` etc.), and CI lints and builds it.
 - Commits follow Conventional Commits. release-please uses them to write the changelog and version releases.
 - Unfinished features ship behind flags in `src/config/features.ts`, so `main` is always releasable.
 
