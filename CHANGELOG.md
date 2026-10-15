@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/terridb/chorequest-frontend/compare/v0.4.1...v0.4.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* removed completed quests from the board right away instead of waiting for every refetch ([ec009bd](https://github.com/terridb/chorequest-frontend/commit/ec009bd55fc5224c1c93361b40f2c864c364aa92))
+
 ## [0.4.1](https://github.com/terridb/chorequest-frontend/compare/v0.4.0...v0.4.1) (2026-10-12)
 
 
