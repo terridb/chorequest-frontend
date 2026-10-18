@@ -2,7 +2,17 @@ import './ConfirmSheet.css'
 import BottomSheet from "../bottom-sheet/BottomSheet.tsx";
 import Button from "../button/Button.tsx";
 
-function ConfirmSheet({open, onClose, title, message, confirmLabel, pendingLabel, onConfirm, isPending = false, error}: {
+function ConfirmSheet({
+                          open,
+                          onClose,
+                          title,
+                          message,
+                          confirmLabel,
+                          pendingLabel,
+                          onConfirm,
+                          isPending = false,
+                          error
+                      }: {
     open: boolean;
     onClose: () => void;
     title: string;
