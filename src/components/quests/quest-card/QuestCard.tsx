@@ -8,19 +8,28 @@ import {useCompleteTask} from "../../../hooks/useCompleteTask.ts";
 import Checkbox from "../../ui/checkbox/Checkbox.tsx";
 import {Link} from "react-router";
 
-function QuestCard({item, householdId, memberId, preview = false}: {
+function QuestCard({item, householdId, assignedMemberId, currentMemberId, onSelectAssignment, preview = false}: {
     item: TaskAssignment,
     householdId?: string,
-    memberId: string | undefined,
-    preview?: boolean
+    assignedMemberId: string | undefined,
+    currentMemberId: string | undefined,
+    onSelectAssignment?: (assignment: TaskAssignment) => void,
+    preview?: boolean;
 }) {
     const isLate = item.dueDate ? isDueDatePast(item.dueDate) : false;
+    const isOwnerOfAssignment = assignedMemberId === currentMemberId;
 
     const completeTask = useCompleteTask(householdId);
 
+
     const handleComplete = () => {
-        if (!memberId) return;
-        completeTask.mutate({assignmentId: item.id, completedByMemberId: memberId});
+        if (!assignedMemberId || !currentMemberId) return;
+
+        if (isOwnerOfAssignment) {
+            completeTask.mutate({assignmentId: item.id, completedByMemberId: assignedMemberId});
+        } else {
+            onSelectAssignment?.(item);
+        }
     }
 
     return (
@@ -29,7 +38,7 @@ function QuestCard({item, householdId, memberId, preview = false}: {
                 <Checkbox
                     checked={completeTask.isPending}
                     onClick={handleComplete}
-                    disabled={completeTask.isPending || !memberId}
+                    disabled={completeTask.isPending || !assignedMemberId || !currentMemberId}
                 />
                 <div className='quest-card-title'>
                     {preview ? (
