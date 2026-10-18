@@ -11,8 +11,8 @@ import {Link} from "react-router";
 function QuestCard({item, householdId, assignedMemberId, currentMemberId, onSelectAssignment, preview = false}: {
     item: TaskAssignment,
     householdId?: string,
-    assignedMemberId: string | undefined,
-    currentMemberId: string | undefined,
+    assignedMemberId?: string | undefined,
+    currentMemberId?: string | undefined,
     onSelectAssignment?: (assignment: TaskAssignment) => void,
     preview?: boolean;
 }) {
