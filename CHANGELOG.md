@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/terridb/chorequest-frontend/compare/v0.4.2...v0.5.0) (2026-10-18)
+
+
+### Features
+
+* added functionality to easily takeover someone else's quest ([2f12d41](https://github.com/terridb/chorequest-frontend/commit/2f12d41b7a69be949de5c9cc6b34db9d4b33d8bd))
+
+
+### Bug Fixes
+
+* fixed TypeScript error in Welcome.tsx ([3b82138](https://github.com/terridb/chorequest-frontend/commit/3b821384c83419de44fc61e6b7a5e22e03d972a3))
+
 ## [0.4.2](https://github.com/terridb/chorequest-frontend/compare/v0.4.1...v0.4.2) (2026-10-15)
 
 ### Bug Fixes
