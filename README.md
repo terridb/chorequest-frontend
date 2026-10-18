@@ -30,7 +30,7 @@ Requires Node.js 22 or newer.
 3. Fill in `.env`:
 
    | Variable               | Value                                                     |
-      |------------------------|-----------------------------------------------------------|
+         |------------------------|-----------------------------------------------------------|
    | `VITE_API_BASE_URL`    | `http://localhost:8080`                                   |
    | `VITE_AUTH0_DOMAIN`    | `chore-quest.eu.auth0.com`                                |
    | `VITE_AUTH0_CLIENT_ID` | Client ID of the SPA application in the Auth0 dashboard   |
