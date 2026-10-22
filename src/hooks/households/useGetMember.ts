@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {HouseholdMember} from "../types/household.ts";
+import {apiClient} from "../../api/client.ts";
+import type {HouseholdMember} from "../../types/household.ts";
 
 export function useGetMember(memberId: string | undefined) {
     return useQuery({

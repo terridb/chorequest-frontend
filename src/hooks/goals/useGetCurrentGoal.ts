@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {Goal} from "../types/goal.ts";
+import {apiClient} from "../../api/client.ts";
+import type {Goal} from "../../types/goal.ts";
 
 export function useGetCurrentGoal(householdId: string | undefined) {
     return useQuery({

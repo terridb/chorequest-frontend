@@ -2,7 +2,7 @@ import './Nav.css'
 import {CartIcon, LeaderboardIcon, QuestsIcon, SettingsIcon} from "../icons/NavIcons.tsx";
 import {NavLink} from "react-router";
 import {features} from "../../../config/features.ts";
-import {useCurrentHouseholdId} from "../../../hooks/useCurrentHouseholdId.ts";
+import {useCurrentHouseholdId} from "../../../hooks/households/useCurrentHouseholdId.ts";
 
 function navItemClassName({isActive}: { isActive: boolean }) {
     return isActive ? 'nav-item active' : 'nav-item';

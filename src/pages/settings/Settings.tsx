@@ -1,7 +1,7 @@
 import {useAuth0} from "@auth0/auth0-react";
 import Header from "../../components/ui/header/Header.tsx";
 import useCurrentUser from "../../auth/useCurrentUser.ts";
-import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
+import {useGetHousehold} from "../../hooks/households/useGetHousehold.ts";
 import Button from "../../components/ui/button/Button.tsx";
 import LabeledGroup from "../../components/ui/labeled-group/LabeledGroup.tsx";
 import SettingRow from "../../components/ui/setting-row/SettingRow.tsx";
@@ -10,18 +10,18 @@ import Avatar from "../../components/ui/avatar/Avatar.tsx";
 import './Settings.css'
 import {features} from "../../config/features.ts";
 import {Link, Navigate, useNavigate} from "react-router";
-import {useLeaveHousehold} from "../../hooks/useLeaveHousehold.ts";
+import {useLeaveHousehold} from "../../hooks/households/useLeaveHousehold.ts";
 import Spinner from "../../components/ui/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import {getErrorMessage} from "../../utils/error.ts";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiClient} from "../../api/client.ts";
-import type {HouseholdInvite} from "../../types/invite.ts";
 import {formatDayAndMonth} from "../../utils/date.ts";
 import {useState} from "react";
 import {CrossIcon} from "../../components/ui/icons/NavIcons.tsx";
 import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
-import {useDeleteAccount} from "../../hooks/useDeleteAccount.ts";
+import {useDeleteAccount} from "../../hooks/account/useDeleteAccount.ts";
+import {useGetCurrentInvite} from "../../hooks/households/useGetCurrentInvite.ts";
+import {useCreateInvite} from "../../hooks/households/useCreateInvite.ts";
+import {useDeleteInvite} from "../../hooks/households/useDeleteInvite.ts";
 
 type ConfirmAction = 'invite' | 'leave' | 'account';
 
@@ -51,27 +51,11 @@ function Settings() {
 
     const isAdmin = member?.role === 'ADMIN';
 
-    const {data: currentInvite} = useQuery({
-        queryKey: ["invite", householdId],
-        queryFn: () =>
-            apiClient.get<HouseholdInvite | "">(`/api/households/${householdId}/invites/current`)
-                .then(res => res.data || null),
-        enabled: !!householdId && isAdmin,
-    });
+    const {data: currentInvite} = useGetCurrentInvite(householdId, isAdmin);
+    const createInvite = useCreateInvite(householdId);
+    const deleteInvite = useDeleteInvite(householdId);
 
     const [isCodeCopied, setIsCodeCopied] = useState(false);
-
-    const queryClient = useQueryClient();
-    const createInvite = useMutation({
-        mutationFn: (householdId: string) =>
-            apiClient.post<HouseholdInvite>(`/api/households/${householdId}/invites`).then(res => res.data),
-        onSuccess: (invite, householdId) => queryClient.setQueryData(["invite", householdId], invite),
-    })
-    const deleteInvite = useMutation({
-        mutationFn: (invite: HouseholdInvite) =>
-            apiClient.delete(`/api/households/${householdId}/invites/${invite.id}`),
-        onSuccess: () => queryClient.setQueryData(["invite", householdId], null),
-    })
 
     if (!me) return <p>Your profile could not be loaded. Try again.</p>
     if (!householdId) return <Navigate to='/join-household' replace/>;
@@ -90,7 +74,7 @@ function Settings() {
 
     const handleDeleteInvite = () => {
         if (!currentInvite || deleteInvite.isPending) return;
-        deleteInvite.mutate(currentInvite, {onSuccess: () => setConfirmAction(null)});
+        deleteInvite.mutate(currentInvite.id, {onSuccess: () => setConfirmAction(null)});
     }
 
     const handleDeleteAccount = () => {
@@ -180,7 +164,7 @@ function Settings() {
                                                     type='button'
                                                     size='small'
                                                     disabled={createInvite.isPending}
-                                                    onClick={() => createInvite.mutate(household.id)}
+                                                    onClick={() => createInvite.mutate()}
                                                 >
                                                     {createInvite.isPending ? 'Creating...' : 'Invite'}
                                                 </Button>

@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {EffortDetail} from "../types/task.ts";
+import {apiClient} from "../../api/client.ts";
+import type {EffortDetail} from "../../types/task.ts";
 
 export function useGetEfforts() {
     return useQuery({

@@ -4,7 +4,7 @@ import {formatFrequency} from "../../../utils/frequency.ts";
 import {formatDueDate, isDueDatePast} from "../../../utils/date.ts";
 import Meter from "../../ui/meter/Meter.tsx";
 import {EFFORT_LEVELS} from "../../../utils/effort.ts";
-import {useCompleteTask} from "../../../hooks/useCompleteTask.ts";
+import {useCompleteTask} from "../../../hooks/tasks/useCompleteTask.ts";
 import Checkbox from "../../ui/checkbox/Checkbox.tsx";
 import {Link} from "react-router";
 

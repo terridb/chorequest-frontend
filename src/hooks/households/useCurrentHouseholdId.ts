@@ -1,4 +1,4 @@
-import useCurrentUser from "../auth/useCurrentUser.ts";
+import useCurrentUser from "../../auth/useCurrentUser.ts";
 
 export function useCurrentHouseholdId() {
     const {data: me} = useCurrentUser();

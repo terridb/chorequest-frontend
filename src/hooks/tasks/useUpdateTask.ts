@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import type {Task, TaskPatchInput} from "../types/task.ts";
-import {apiClient} from "../api/client.ts";
+import type {Task, TaskPatchInput} from "../../types/task.ts";
+import {apiClient} from "../../api/client.ts";
 
 export function useUpdateTask(householdId: string) {
     const queryClient = useQueryClient();
