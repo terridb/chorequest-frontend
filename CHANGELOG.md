@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/terridb/chorequest-frontend/compare/v0.5.0...v0.6.0) (2026-10-22)
+
+
+### Features
+
+* added a history section to quest details showing who completed … ([fc69b45](https://github.com/terridb/chorequest-frontend/commit/fc69b45f0fc7597a86bc656f9002c16192764f2c))
+* added a history section to quest details showing who completed the quest and when ([0c483f6](https://github.com/terridb/chorequest-frontend/commit/0c483f6a30a7c76de2f4b2ff0b9721285315ec1d))
+
+
+### Bug Fixes
+
+* **deps:** updated follow-redirects to fix a high severity advisory ([106bbb3](https://github.com/terridb/chorequest-frontend/commit/106bbb3d502402ab59ce02c9ac5be66e05c6ef55))
+
 ## [0.5.0](https://github.com/terridb/chorequest-frontend/compare/v0.4.2...v0.5.0) (2026-10-18)
 
 
