@@ -30,6 +30,17 @@ export interface TaskCompletion {
     completedBy: SimpleUser;
 }
 
+export interface SimpleTaskCompletion {
+    id: string;
+    completedAt: string;
+    rewardedPoints: number;
+    member: {
+        id: string;
+        user: SimpleUser | null;
+        points: number;
+    };
+}
+
 export interface TaskInput {
     title: string;
     description?: string;
