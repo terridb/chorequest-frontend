@@ -9,6 +9,7 @@ export function useDeleteTask(householdId: string | undefined) {
             apiClient.delete(`/api/tasks/${taskId}`),
         onSuccess: (_data, taskId) => {
             queryClient.removeQueries({queryKey: ["task", taskId]});
+            queryClient.removeQueries({queryKey: ["taskHistory", taskId]});
             void queryClient.invalidateQueries({queryKey: ["assignments", householdId]});
         }
     })

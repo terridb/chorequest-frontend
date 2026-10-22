@@ -8,7 +8,7 @@ export function useCompleteTask(householdId: string | undefined) {
     return useMutation({
         mutationFn: ({assignmentId, ...input}: TaskCompletionInput & { assignmentId: string }) =>
             apiClient.post<TaskCompletion>(`/api/assignments/${assignmentId}/completions`, input).then(res => res.data),
-        onSuccess: (_completion, {assignmentId}) => {
+        onSuccess: (completion, {assignmentId}) => {
             queryClient.setQueryData<TaskAssignment[]>(
                 ["assignments", householdId],
                 assignments => assignments?.filter(assignment => assignment.id !== assignmentId),
@@ -16,6 +16,7 @@ export function useCompleteTask(householdId: string | undefined) {
             void queryClient.invalidateQueries({queryKey: ["assignments", householdId]});
             void queryClient.invalidateQueries({queryKey: ["goal", householdId]});
             void queryClient.invalidateQueries({queryKey: ["household", householdId]});
+            void queryClient.invalidateQueries({queryKey: ["taskHistory", completion.taskAssignment.task.id]});
         }
     })
 }

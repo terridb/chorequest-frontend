@@ -53,7 +53,7 @@ function Welcome() {
             <main className='outer-container welcome-main'>
                 <div className='welcome-content'>
                     <div className='welcome-illustrations'>
-                        <QuestCard item={exampleQuest} memberId={undefined} preview/>
+                        <QuestCard item={exampleQuest} preview/>
                     </div>
                     <h1>Your chores are now quests</h1>
                     <p className='welcome-description'>Your household posts the tasks, everyone clears them for points
