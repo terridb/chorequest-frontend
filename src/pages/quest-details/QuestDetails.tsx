@@ -27,6 +27,7 @@ import {useState} from "react";
 import {useDeleteTask} from "../../hooks/useDeleteTask.ts";
 import {getErrorMessage} from "../../utils/error.ts";
 import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
+import TaskHistory from "../../components/quests/task-history/TaskHistory.tsx";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Single responsible person',
@@ -146,6 +147,7 @@ function QuestDetails() {
                     <LabeledGroup label='Rotation' hint={STRATEGY_HINTS[task.strategy]}>
                         <OptionPicker options={toMemberOptions(members)} value={highlightedMemberId} decorative/>
                     </LabeledGroup>
+                    <TaskHistory taskId={task.id}/>
                 </section>
             </main>
             <BottomSheet

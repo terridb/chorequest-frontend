@@ -1,0 +1,14 @@
+.task-history-status {
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+.task-history-points {
+    flex-shrink: 0;
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--blue);
+}
