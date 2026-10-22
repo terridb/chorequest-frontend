@@ -22,8 +22,10 @@ import {useDeleteAccount} from "../../hooks/account/useDeleteAccount.ts";
 import {useGetCurrentInvite} from "../../hooks/households/useGetCurrentInvite.ts";
 import {useCreateInvite} from "../../hooks/households/useCreateInvite.ts";
 import {useDeleteInvite} from "../../hooks/households/useDeleteInvite.ts";
+import {usePromoteMember} from "../../hooks/households/usePromoteMember.ts";
+import AddAdminSheet from "../../components/households/add-admin-sheet/AddAdminSheet.tsx";
 
-type ConfirmAction = 'invite' | 'leave' | 'account';
+type ConfirmAction = 'invite' | 'leave' | 'account' | 'admin';
 
 function Settings() {
     const {logout} = useAuth0();
@@ -43,11 +45,14 @@ function Settings() {
         ? [capitalize(household.type), [household.city, household.zipcode].filter(Boolean).join(' ')].filter(Boolean).join(' · ')
         : '';
     const orderedMembers = [...(household?.members ?? [])].sort((a, b) => a.role.localeCompare(b.role));
+    const promotableMembers = orderedMembers.filter(member => member.role !== 'ADMIN');
 
     const navigate = useNavigate();
-    const leaveHousehold = useLeaveHousehold(household?.id);
+    const leaveHousehold = useLeaveHousehold(householdId);
     const deleteAccount = useDeleteAccount();
+    const promoteMember = usePromoteMember(householdId);
     const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
+    const [adminCandidateId, setAdminCandidateId] = useState<string | null>(null);
 
     const isAdmin = member?.role === 'ADMIN';
 
@@ -85,11 +90,17 @@ function Settings() {
         );
     }
 
+    const handleAddAdmin = () => {
+        if (!adminCandidateId || promoteMember.isPending) return;
+        promoteMember.mutate(adminCandidateId, {onSuccess: () => setConfirmAction(null)});
+    }
+
     const handleCloseConfirm = () => {
         setConfirmAction(null);
         deleteInvite.reset();
         leaveHousehold.reset();
         deleteAccount.reset();
+        promoteMember.reset();
     }
 
     const householdName = household?.name ?? 'your house';
@@ -170,6 +181,24 @@ function Settings() {
                                                 </Button>
                                             </SettingRow>
                                         }
+                                        {isAdmin && promotableMembers.length > 0 &&
+                                            <SettingRow
+                                                title='Add an admin'
+                                                subtitle='Let a housemate manage the house too'
+                                            >
+                                                <Button
+                                                    variant='secondary'
+                                                    type='button'
+                                                    size='small'
+                                                    onClick={() => {
+                                                        setAdminCandidateId(null);
+                                                        setConfirmAction('admin');
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            </SettingRow>
+                                        }
                                     </div>
                                 </>
                             )}
@@ -181,7 +210,7 @@ function Settings() {
                                         title={currentInvite.code}
                                         subtitle={`Expires ${formatDayAndMonth(new Date(currentInvite.expiresAt))}`}
                                     >
-                                        <div className='invite-actions'>
+                                        <div className='row-actions'>
                                             <Button
                                                 variant='secondary'
                                                 type='button'
@@ -238,6 +267,18 @@ function Settings() {
                     </LabeledGroup>
                 </section>
             </main>
+            <AddAdminSheet
+                open={confirmAction === 'admin'}
+                onClose={handleCloseConfirm}
+                members={promotableMembers}
+                selectedId={adminCandidateId}
+                onSelect={setAdminCandidateId}
+                onConfirm={handleAddAdmin}
+                isPending={promoteMember.isPending}
+                error={promoteMember.isError
+                    ? getErrorMessage(promoteMember.error, "Couldn't add as admin. Please try again.")
+                    : undefined}
+            />
             <ConfirmSheet
                 open={confirmAction === 'invite'}
                 onClose={handleCloseConfirm}
