@@ -17,18 +17,24 @@ import AddGoalForm from "../../components/goals/add-goal-form/AddGoalForm.tsx";
 import {useGetAssignments} from "../../hooks/tasks/useGetAssignments.ts";
 import {useGetHousehold} from "../../hooks/households/useGetHousehold.ts";
 import {useCurrentHouseholdId} from "../../hooks/households/useCurrentHouseholdId.ts";
+import useCurrentUser from "../../auth/useCurrentUser.ts";
+import {useCompleteTask} from "../../hooks/tasks/useCompleteTask.ts";
 
 function Quests() {
     const householdId = useCurrentHouseholdId();
 
     const [isAddQuestOpen, setIsAddQuestOpen] = useState(false);
     const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
+    const [selectedAssignment, setSelectedAssignment] = useState<TaskAssignment | null>(null);
+    const [isReassignOpen, setIsReassignOpen] = useState(false);
 
     const {
         data: assignments,
         isError: isAssignmentsError,
         isLoading: isAssignmentsLoading
     } = useGetAssignments(householdId);
+    const completeTask = useCompleteTask(householdId);
+    const {data: me} = useCurrentUser();
 
     const {data: household, isLoading: isHouseholdLoading, isError: isHouseholdError} = useGetHousehold(householdId);
 
@@ -64,9 +70,30 @@ function Quests() {
     const anytimeAssignments = assignments ? filterAnytimeAssignments(assignments) : [];
     const hasAssignments = lateAssignments.length > 0 || todayAssignments.length > 0
         || otherAssignments.length > 0 || anytimeAssignments.length > 0;
+    const members = household?.members ?? [];
+    const currentMemberId = members.find(member => member.user.id === me?.id)?.id;
+    const selectedMemberId = members.find(member => member.user.id === selectedAssignment?.user.id)?.id;
 
     const calculatePointsToGo = (goal: Goal): number => {
         return goal.goalPoints - goal.currentPoints;
+    }
+
+    const handleSelectAssignment = (assignment: TaskAssignment) => {
+        setSelectedAssignment(assignment);
+        setIsReassignOpen(true);
+    }
+
+    const handleCloseReassign = () => {
+        setIsReassignOpen(false);
+    }
+
+    const handleReassignComplete = (completedByMemberId: string | undefined) => {
+        if (!selectedAssignment || !completedByMemberId) {
+            return;
+        }
+
+        completeTask.mutate({assignmentId: selectedAssignment.id, completedByMemberId: completedByMemberId});
+        handleCloseReassign();
     }
 
     return (
@@ -99,6 +126,7 @@ function Quests() {
                         danger
                         householdId={householdId}
                         members={household?.members ?? []}
+                        onSelectAssignment={handleSelectAssignment}
                     />
                 }
                 {!isError && todayAssignments.length > 0 &&
@@ -107,6 +135,7 @@ function Quests() {
                         title='today'
                         householdId={householdId}
                         members={household?.members ?? []}
+                        onSelectAssignment={handleSelectAssignment}
                     />
                 }
                 {!isError && otherAssignments.length > 0 &&
@@ -115,6 +144,7 @@ function Quests() {
                         title='future'
                         householdId={householdId}
                         members={household?.members ?? []}
+                        onSelectAssignment={handleSelectAssignment}
                     />
                 }
                 {!isError && anytimeAssignments.length > 0 &&
@@ -123,6 +153,7 @@ function Quests() {
                         title='anytime'
                         householdId={householdId}
                         members={household?.members ?? []}
+                        onSelectAssignment={handleSelectAssignment}
                     />
                 }
                 {!isError && !isLoading && !hasAssignments && (
@@ -142,6 +173,30 @@ function Quests() {
                 title='New Quest'
             >
                 {household && <QuestForm household={household} onSaved={() => setIsAddQuestOpen(false)}/>}
+            </BottomSheet>
+            <BottomSheet
+                open={isReassignOpen}
+                onClose={() => handleCloseReassign()}
+                title="It's not your turn"
+            >
+                <div className='reassign-sheet'>
+                    <Button
+                        variant='secondary'
+                        size='large'
+                        onClick={() => handleReassignComplete(selectedMemberId)}
+                        disabled={!selectedMemberId}
+                    >
+                        Check task for {selectedAssignment?.user.firstName ?? 'original member'}
+                    </Button>
+                    <Button
+                        variant='primary'
+                        size='large'
+                        onClick={() => handleReassignComplete(currentMemberId)}
+                        disabled={!currentMemberId}
+                    >
+                        I took over the task
+                    </Button>
+                </div>
             </BottomSheet>
             <Button className="add-button" onClick={() => setIsAddQuestOpen(true)}>
                 <PlusIcon className="add-button-icon"/>

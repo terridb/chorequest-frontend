@@ -1,5 +1,5 @@
 import './TaskHistory.css'
-import {useGetTaskHistory} from "../../../hooks/useGetTaskHistory.ts";
+import {useGetTaskHistory} from "../../../hooks/tasks/useGetTaskHistory.ts";
 import {useDelayedLoading} from "../../../hooks/useDelayedLoading.ts";
 import LabeledGroup from "../../ui/labeled-group/LabeledGroup.tsx";
 import SettingRow from "../../ui/setting-row/SettingRow.tsx";
