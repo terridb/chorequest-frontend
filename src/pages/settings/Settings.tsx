@@ -46,7 +46,10 @@ function Settings() {
     const householdDetails = household
         ? [capitalize(household.type), [household.city, household.zipcode].filter(Boolean).join(' ')].filter(Boolean).join(' · ')
         : '';
-    const orderedMembers = [...(household?.members ?? [])].sort((a, b) => a.role.localeCompare(b.role));
+    const orderedMembers = [...(household?.members ?? [])].sort((a, b) =>
+        a.role.localeCompare(b.role)
+        || a.user.firstName.localeCompare(b.user.firstName)
+        || a.id.localeCompare(b.id));
     const promotableMembers = orderedMembers.filter(member => member.role !== 'ADMIN');
 
     const navigate = useNavigate();
