@@ -65,8 +65,24 @@
     background-color: var(--bg-sunk);
     font-weight: 500;
     display: flex;
+    align-items: center;
     gap: var(--space-sm);
     border-top: 1px solid var(--border);
+}
+
+.quest-card-assignee {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.quest-card-assignee .avatar {
+    width: 24px;
+    height: 24px;
+}
+
+.quest-card-assignee .avatar-fallback {
+    font-size: 0.7rem;
 }
 
 .quest-title {
