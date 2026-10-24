@@ -1,0 +1,33 @@
+.edit-profile-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.edit-profile-photo-trigger {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.edit-profile-photo .avatar {
+    width: 96px;
+    height: 96px;
+}
+
+.edit-profile-photo .avatar-fallback {
+    font-size: 2.2rem;
+}
+
+.edit-profile-photo-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+.edit-profile-photo-actions .edit-profile-photo-link {
+    color: var(--blue);
+    font-weight: 600;
+}

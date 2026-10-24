@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {SimpleTaskCompletion} from "../types/task.ts";
+import {apiClient} from "../../api/client.ts";
+import type {SimpleTaskCompletion} from "../../types/task.ts";
 
 export function useGetTaskHistory(taskId: string | undefined) {
     return useQuery({

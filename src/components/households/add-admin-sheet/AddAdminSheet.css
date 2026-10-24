@@ -1,0 +1,16 @@
+.add-admin-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.add-admin-sheet-message {
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+.add-admin-sheet-error {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--red);
+}

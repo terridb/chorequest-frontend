@@ -4,7 +4,7 @@ import Form from "../../ui/form/Form.tsx";
 import {Controller, useForm, useWatch} from "react-hook-form";
 import LabeledGroup from "../../ui/labeled-group/LabeledGroup.tsx";
 import type {Household} from "../../../types/household.ts";
-import {useCreateGoal} from "../../../hooks/useCreateGoal.ts";
+import {useCreateGoal} from "../../../hooks/goals/useCreateGoal.ts";
 import OptionPicker from "../../ui/option-picker/OptionPicker.tsx";
 import Meter from "../../ui/meter/Meter.tsx";
 import {useState} from "react";

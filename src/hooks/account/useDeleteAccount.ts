@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
+import {apiClient} from "../../api/client.ts";
 
 export function useDeleteAccount() {
     return useMutation({

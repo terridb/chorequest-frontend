@@ -1,6 +1,6 @@
 import './Avatar.css'
 import {type CSSProperties, useState} from "react";
-import {getAvatarColorVar} from "../../../utils/avatar.ts";
+import {getAvatarColorVar, resolveAvatarUrl} from "../../../utils/avatar.ts";
 
 function Avatar({src, name, seed}: { src?: string; name: string; seed: string }) {
     const [imageFailed, setImageFailed] = useState(false);
@@ -8,7 +8,7 @@ function Avatar({src, name, seed}: { src?: string; name: string; seed: string })
     if (src && !imageFailed) {
         return (
             <img
-                src={src}
+                src={resolveAvatarUrl(src)}
                 alt={`Avatar of ${name}`}
                 className='avatar'
                 onError={() => setImageFailed(true)}

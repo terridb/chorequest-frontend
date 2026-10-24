@@ -4,9 +4,10 @@ import {formatFrequency} from "../../../utils/frequency.ts";
 import {formatDueDate, isDueDatePast} from "../../../utils/date.ts";
 import Meter from "../../ui/meter/Meter.tsx";
 import {EFFORT_LEVELS} from "../../../utils/effort.ts";
-import {useCompleteTask} from "../../../hooks/useCompleteTask.ts";
+import {useCompleteTask} from "../../../hooks/tasks/useCompleteTask.ts";
 import Checkbox from "../../ui/checkbox/Checkbox.tsx";
 import {Link} from "react-router";
+import Avatar from "../../ui/avatar/Avatar.tsx";
 
 function QuestCard({item, householdId, assignedMemberId, currentMemberId, onSelectAssignment, preview = false}: {
     item: TaskAssignment,
@@ -57,7 +58,10 @@ function QuestCard({item, householdId, assignedMemberId, currentMemberId, onSele
                 <p className='points'>+{item.task.defaultPoints}</p>
             </div>
             <div className='quest-card-body'>
-                <p>{item.user.firstName}</p>
+                <p className='quest-card-assignee'>
+                    <Avatar src={item.user.avatarUrl} name={item.user.firstName} seed={assignedMemberId ?? item.user.id}/>
+                    {assignedMemberId && isOwnerOfAssignment ? 'You' : item.user.firstName}
+                </p>
                 {item.dueDate &&
                     <>
                         <p>-</p>

@@ -1,5 +1,5 @@
 export const features = {
-    editProfile: false,
+    editProfile: true,
     shoppingLists: false,
     ranking: false,
     removeOtherUsers: false,

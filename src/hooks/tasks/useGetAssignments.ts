@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {TaskAssignment} from "../types/task.ts";
+import {apiClient} from "../../api/client.ts";
+import type {TaskAssignment} from "../../types/task.ts";
 
 export function useGetAssignments(householdId: string | undefined) {
     return useQuery({

@@ -1,7 +1,7 @@
 import {useAuth0} from "@auth0/auth0-react";
 import Header from "../../components/ui/header/Header.tsx";
 import useCurrentUser from "../../auth/useCurrentUser.ts";
-import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
+import {useGetHousehold} from "../../hooks/households/useGetHousehold.ts";
 import Button from "../../components/ui/button/Button.tsx";
 import LabeledGroup from "../../components/ui/labeled-group/LabeledGroup.tsx";
 import SettingRow from "../../components/ui/setting-row/SettingRow.tsx";
@@ -10,20 +10,24 @@ import Avatar from "../../components/ui/avatar/Avatar.tsx";
 import './Settings.css'
 import {features} from "../../config/features.ts";
 import {Link, Navigate, useNavigate} from "react-router";
-import {useLeaveHousehold} from "../../hooks/useLeaveHousehold.ts";
+import {useLeaveHousehold} from "../../hooks/households/useLeaveHousehold.ts";
 import Spinner from "../../components/ui/spinner/Spinner.tsx";
 import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import {getErrorMessage} from "../../utils/error.ts";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiClient} from "../../api/client.ts";
-import type {HouseholdInvite} from "../../types/invite.ts";
 import {formatDayAndMonth} from "../../utils/date.ts";
 import {useState} from "react";
 import {CrossIcon} from "../../components/ui/icons/NavIcons.tsx";
 import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
-import {useDeleteAccount} from "../../hooks/useDeleteAccount.ts";
+import {useDeleteAccount} from "../../hooks/account/useDeleteAccount.ts";
+import {useGetCurrentInvite} from "../../hooks/households/useGetCurrentInvite.ts";
+import {useCreateInvite} from "../../hooks/households/useCreateInvite.ts";
+import {useDeleteInvite} from "../../hooks/households/useDeleteInvite.ts";
+import {usePromoteMember} from "../../hooks/households/usePromoteMember.ts";
+import AddAdminSheet from "../../components/households/add-admin-sheet/AddAdminSheet.tsx";
+import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
+import EditProfileForm from "../../components/account/edit-profile-form/EditProfileForm.tsx";
 
-type ConfirmAction = 'invite' | 'leave' | 'account';
+type ConfirmAction = 'invite' | 'leave' | 'account' | 'admin';
 
 function Settings() {
     const {logout} = useAuth0();
@@ -42,36 +46,27 @@ function Settings() {
     const householdDetails = household
         ? [capitalize(household.type), [household.city, household.zipcode].filter(Boolean).join(' ')].filter(Boolean).join(' · ')
         : '';
-    const orderedMembers = [...(household?.members ?? [])].sort((a, b) => a.role.localeCompare(b.role));
+    const orderedMembers = [...(household?.members ?? [])].sort((a, b) =>
+        a.role.localeCompare(b.role)
+        || a.user.firstName.localeCompare(b.user.firstName)
+        || a.id.localeCompare(b.id));
+    const promotableMembers = orderedMembers.filter(member => member.role !== 'ADMIN');
 
     const navigate = useNavigate();
-    const leaveHousehold = useLeaveHousehold(household?.id);
+    const leaveHousehold = useLeaveHousehold(householdId);
     const deleteAccount = useDeleteAccount();
+    const promoteMember = usePromoteMember(householdId);
     const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
+    const [adminCandidateId, setAdminCandidateId] = useState<string | null>(null);
 
     const isAdmin = member?.role === 'ADMIN';
 
-    const {data: currentInvite} = useQuery({
-        queryKey: ["invite", householdId],
-        queryFn: () =>
-            apiClient.get<HouseholdInvite | "">(`/api/households/${householdId}/invites/current`)
-                .then(res => res.data || null),
-        enabled: !!householdId && isAdmin,
-    });
+    const {data: currentInvite} = useGetCurrentInvite(householdId, isAdmin);
+    const createInvite = useCreateInvite(householdId);
+    const deleteInvite = useDeleteInvite(householdId);
 
     const [isCodeCopied, setIsCodeCopied] = useState(false);
-
-    const queryClient = useQueryClient();
-    const createInvite = useMutation({
-        mutationFn: (householdId: string) =>
-            apiClient.post<HouseholdInvite>(`/api/households/${householdId}/invites`).then(res => res.data),
-        onSuccess: (invite, householdId) => queryClient.setQueryData(["invite", householdId], invite),
-    })
-    const deleteInvite = useMutation({
-        mutationFn: (invite: HouseholdInvite) =>
-            apiClient.delete(`/api/households/${householdId}/invites/${invite.id}`),
-        onSuccess: () => queryClient.setQueryData(["invite", householdId], null),
-    })
+    const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
     if (!me) return <p>Your profile could not be loaded. Try again.</p>
     if (!householdId) return <Navigate to='/join-household' replace/>;
@@ -90,7 +85,7 @@ function Settings() {
 
     const handleDeleteInvite = () => {
         if (!currentInvite || deleteInvite.isPending) return;
-        deleteInvite.mutate(currentInvite, {onSuccess: () => setConfirmAction(null)});
+        deleteInvite.mutate(currentInvite.id, {onSuccess: () => setConfirmAction(null)});
     }
 
     const handleDeleteAccount = () => {
@@ -101,38 +96,52 @@ function Settings() {
         );
     }
 
+    const handleAddAdmin = () => {
+        if (!adminCandidateId || promoteMember.isPending) return;
+        promoteMember.mutate(adminCandidateId, {onSuccess: () => setConfirmAction(null)});
+    }
+
     const handleCloseConfirm = () => {
         setConfirmAction(null);
         deleteInvite.reset();
         leaveHousehold.reset();
         deleteAccount.reset();
+        promoteMember.reset();
     }
 
     const householdName = household?.name ?? 'your house';
 
     return (
         <div>
-            <Header
-                title={me.firstName}
-                toolbar={
-                    <>
-                        <span></span>
-                        {features.editProfile &&
-                            <Button
-                                variant='dark'
-                                size='small'
-                            >
-                                Edit profile
-                            </Button>
-                        }
-                    </>
-                }
-                aside={member && <p className='points'>{member.points} PTS</p>}
-            >
-            </Header>
+            <Header title='Settings'/>
             <main className='outer-container'>
                 <section className='inner-container'>
                     <div className='settings-wrapper'>
+                        <LabeledGroup label='Profile'>
+                            <div className='panel'>
+                                <SettingRow
+                                    size='large'
+                                    title={[me.firstName, me.lastName].filter(Boolean).join(' ')}
+                                    subtitle={member && `${member.points} pts`}
+                                    icon={
+                                        <span className='profile-avatar'>
+                                            <Avatar src={me.avatarUrl} name={me.firstName} seed={member?.id ?? me.id}/>
+                                        </span>
+                                    }
+                                >
+                                    {features.editProfile &&
+                                        <Button
+                                            variant='secondary'
+                                            type='button'
+                                            size='small'
+                                            onClick={() => setIsEditProfileOpen(true)}
+                                        >
+                                            Edit
+                                        </Button>
+                                    }
+                                </SettingRow>
+                            </div>
+                        </LabeledGroup>
                         <LabeledGroup label='household'>
                             {isHouseholdLoading ? (
                                 <div className='panel settings-status'>
@@ -180,9 +189,27 @@ function Settings() {
                                                     type='button'
                                                     size='small'
                                                     disabled={createInvite.isPending}
-                                                    onClick={() => createInvite.mutate(household.id)}
+                                                    onClick={() => createInvite.mutate()}
                                                 >
                                                     {createInvite.isPending ? 'Creating...' : 'Invite'}
+                                                </Button>
+                                            </SettingRow>
+                                        }
+                                        {isAdmin && promotableMembers.length > 0 &&
+                                            <SettingRow
+                                                title='Add an admin'
+                                                subtitle='Let a housemate manage the house too'
+                                            >
+                                                <Button
+                                                    variant='secondary'
+                                                    type='button'
+                                                    size='small'
+                                                    onClick={() => {
+                                                        setAdminCandidateId(null);
+                                                        setConfirmAction('admin');
+                                                    }}
+                                                >
+                                                    Add
                                                 </Button>
                                             </SettingRow>
                                         }
@@ -197,7 +224,7 @@ function Settings() {
                                         title={currentInvite.code}
                                         subtitle={`Expires ${formatDayAndMonth(new Date(currentInvite.expiresAt))}`}
                                     >
-                                        <div className='invite-actions'>
+                                        <div className='row-actions'>
                                             <Button
                                                 variant='secondary'
                                                 type='button'
@@ -254,6 +281,18 @@ function Settings() {
                     </LabeledGroup>
                 </section>
             </main>
+            <AddAdminSheet
+                open={confirmAction === 'admin'}
+                onClose={handleCloseConfirm}
+                members={promotableMembers}
+                selectedId={adminCandidateId}
+                onSelect={setAdminCandidateId}
+                onConfirm={handleAddAdmin}
+                isPending={promoteMember.isPending}
+                error={promoteMember.isError
+                    ? getErrorMessage(promoteMember.error, "Couldn't add as admin. Please try again.")
+                    : undefined}
+            />
             <ConfirmSheet
                 open={confirmAction === 'invite'}
                 onClose={handleCloseConfirm}
@@ -293,6 +332,17 @@ function Settings() {
                     ? getErrorMessage(deleteAccount.error, "Couldn't delete your account. Please try again.")
                     : undefined}
             />
+            <BottomSheet
+                open={isEditProfileOpen}
+                onClose={() => setIsEditProfileOpen(false)}
+                title='Edit profile'
+            >
+                <EditProfileForm
+                    user={me}
+                    avatarSeed={member?.id ?? me.id}
+                    onSaved={() => setIsEditProfileOpen(false)}
+                />
+            </BottomSheet>
             <footer className='outer-container settings-footer'>
                 <p>ChoreQuest v{__APP_VERSION__} · <Link to='/privacy'>Privacy</Link></p>
             </footer>

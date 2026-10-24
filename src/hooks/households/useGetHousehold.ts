@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {Household} from "../types/household.ts";
+import {apiClient} from "../../api/client.ts";
+import type {Household} from "../../types/household.ts";
 
 export function useGetHousehold(householdId: string | undefined) {
     return useQuery({

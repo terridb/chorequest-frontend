@@ -2,7 +2,7 @@ import {Controller, useForm, useWatch} from "react-hook-form";
 import type {AssignmentStrategy, Frequency} from "../../../types/enums.ts";
 import type {Task, TaskInput} from "../../../types/task.ts";
 import type {Household} from "../../../types/household.ts";
-import {useGetEfforts} from "../../../hooks/useGetEfforts.ts";
+import {useGetEfforts} from "../../../hooks/tasks/useGetEfforts.ts";
 import {useDelayedLoading} from "../../../hooks/useDelayedLoading.ts";
 import {formatFrequency} from "../../../utils/frequency.ts";
 import {toLocalDateString} from "../../../utils/date.ts";
@@ -16,8 +16,8 @@ import Meter from "../../ui/meter/Meter.tsx";
 import {EFFORT_HINTS, EFFORT_LEVELS} from "../../../utils/effort.ts";
 import {capitalize} from "../../../utils/text.ts";
 import {toMemberOptions} from "../../ui/option-picker/memberOptions.tsx";
-import {useCreateTask} from "../../../hooks/useCreateTask.ts";
-import {useUpdateTask} from "../../../hooks/useUpdateTask.ts";
+import {useCreateTask} from "../../../hooks/tasks/useCreateTask.ts";
+import {useUpdateTask} from "../../../hooks/tasks/useUpdateTask.ts";
 
 const ASSIGNMENT_OPTIONS = [
     {value: 'SOLO', label: 'One person'},

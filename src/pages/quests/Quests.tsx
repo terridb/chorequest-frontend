@@ -7,18 +7,18 @@ import {useDelayedLoading} from "../../hooks/useDelayedLoading.ts";
 import {isDueDateFuture, isDueDatePast, isDueDateToday} from "../../utils/date.ts";
 import QuestSection from "../../components/quests/quest-section/QuestSection.tsx";
 import type {Goal} from "../../types/goal.ts";
-import {useGetCurrentGoal} from "../../hooks/useGetCurrentGoal.ts";
+import {useGetCurrentGoal} from "../../hooks/goals/useGetCurrentGoal.ts";
 import Button from "../../components/ui/button/Button.tsx";
 import {PlusIcon} from "../../components/ui/icons/NavIcons.tsx";
 import {useState} from "react";
 import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
 import QuestForm from "../../components/quests/quest-form/QuestForm.tsx";
 import AddGoalForm from "../../components/goals/add-goal-form/AddGoalForm.tsx";
-import {useGetAssignments} from "../../hooks/useGetAssignments.ts";
-import {useGetHousehold} from "../../hooks/useGetHousehold.ts";
-import {useCurrentHouseholdId} from "../../hooks/useCurrentHouseholdId.ts";
+import {useGetAssignments} from "../../hooks/tasks/useGetAssignments.ts";
+import {useGetHousehold} from "../../hooks/households/useGetHousehold.ts";
+import {useCurrentHouseholdId} from "../../hooks/households/useCurrentHouseholdId.ts";
 import useCurrentUser from "../../auth/useCurrentUser.ts";
-import {useCompleteTask} from "../../hooks/useCompleteTask.ts";
+import {useCompleteTask} from "../../hooks/tasks/useCompleteTask.ts";
 
 function Quests() {
     const householdId = useCurrentHouseholdId();

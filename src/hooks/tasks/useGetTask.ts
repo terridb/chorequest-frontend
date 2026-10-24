@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiClient} from "../api/client.ts";
-import type {Task} from "../types/task.ts";
+import {apiClient} from "../../api/client.ts";
+import type {Task} from "../../types/task.ts";
 
 export function useGetTask(taskId: string | undefined) {
     return useQuery({
