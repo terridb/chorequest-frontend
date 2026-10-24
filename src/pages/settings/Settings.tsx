@@ -24,6 +24,8 @@ import {useCreateInvite} from "../../hooks/households/useCreateInvite.ts";
 import {useDeleteInvite} from "../../hooks/households/useDeleteInvite.ts";
 import {usePromoteMember} from "../../hooks/households/usePromoteMember.ts";
 import AddAdminSheet from "../../components/households/add-admin-sheet/AddAdminSheet.tsx";
+import BottomSheet from "../../components/ui/bottom-sheet/BottomSheet.tsx";
+import EditProfileForm from "../../components/account/edit-profile-form/EditProfileForm.tsx";
 
 type ConfirmAction = 'invite' | 'leave' | 'account' | 'admin';
 
@@ -61,6 +63,7 @@ function Settings() {
     const deleteInvite = useDeleteInvite(householdId);
 
     const [isCodeCopied, setIsCodeCopied] = useState(false);
+    const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
     if (!me) return <p>Your profile could not be loaded. Try again.</p>
     if (!householdId) return <Navigate to='/join-household' replace/>;
@@ -107,27 +110,35 @@ function Settings() {
 
     return (
         <div>
-            <Header
-                title={me.firstName}
-                toolbar={
-                    <>
-                        <span></span>
-                        {features.editProfile &&
-                            <Button
-                                variant='dark'
-                                size='small'
-                            >
-                                Edit profile
-                            </Button>
-                        }
-                    </>
-                }
-                aside={member && <p className='points'>{member.points} PTS</p>}
-            >
-            </Header>
+            <Header title='Settings'/>
             <main className='outer-container'>
                 <section className='inner-container'>
                     <div className='settings-wrapper'>
+                        <LabeledGroup label='Profile'>
+                            <div className='panel'>
+                                <SettingRow
+                                    size='large'
+                                    title={[me.firstName, me.lastName].filter(Boolean).join(' ')}
+                                    subtitle={member && `${member.points} pts`}
+                                    icon={
+                                        <span className='profile-avatar'>
+                                            <Avatar src={me.avatarUrl} name={me.firstName} seed={member?.id ?? me.id}/>
+                                        </span>
+                                    }
+                                >
+                                    {features.editProfile &&
+                                        <Button
+                                            variant='secondary'
+                                            type='button'
+                                            size='small'
+                                            onClick={() => setIsEditProfileOpen(true)}
+                                        >
+                                            Edit
+                                        </Button>
+                                    }
+                                </SettingRow>
+                            </div>
+                        </LabeledGroup>
                         <LabeledGroup label='household'>
                             {isHouseholdLoading ? (
                                 <div className='panel settings-status'>
@@ -318,6 +329,17 @@ function Settings() {
                     ? getErrorMessage(deleteAccount.error, "Couldn't delete your account. Please try again.")
                     : undefined}
             />
+            <BottomSheet
+                open={isEditProfileOpen}
+                onClose={() => setIsEditProfileOpen(false)}
+                title='Edit profile'
+            >
+                <EditProfileForm
+                    user={me}
+                    avatarSeed={member?.id ?? me.id}
+                    onSaved={() => setIsEditProfileOpen(false)}
+                />
+            </BottomSheet>
             <footer className='outer-container settings-footer'>
                 <p>ChoreQuest v{__APP_VERSION__} · <Link to='/privacy'>Privacy</Link></p>
             </footer>

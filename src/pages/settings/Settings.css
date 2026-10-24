@@ -46,3 +46,12 @@
 .settings-footer a {
     color: inherit;
 }
+
+.profile-avatar .avatar {
+    width: 56px;
+    height: 56px;
+}
+
+.profile-avatar .avatar-fallback {
+    font-size: 1.4rem;
+}
