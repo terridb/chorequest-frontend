@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.0](https://github.com/terridb/chorequest-frontend/compare/v0.6.0...v0.7.0) (2026-10-24)
+
+
+### Features
+
+* added a profile section to settings with an edit profile sheet for changing your name and photo ([71a8b21](https://github.com/terridb/chorequest-frontend/commit/71a8b21edc99b1002dfe668e718e2fe9d59f8738))
+* added profile pictures to the quest cards and show You on your own quests ([de62f0b](https://github.com/terridb/chorequest-frontend/commit/de62f0bdc9ded394fcd0f9009d3d2edcc95f1d93))
+
+
+### Bug Fixes
+
+* **deps:** updated zod to fix a high severity advisory ([a00108e](https://github.com/terridb/chorequest-frontend/commit/a00108e78030b14ff1c0155b6cd658a335a21a2d))
+* members with the same role kept switching places in settings ([599d366](https://github.com/terridb/chorequest-frontend/commit/599d366c3816afbb9e6caf7235d0bca2620a5b55))
+* restored quest takeover on the quest board that got lost in the merge and moved the task history hook into the tasks folder ([37e40af](https://github.com/terridb/chorequest-frontend/commit/37e40af07560f63da5b3c303067291d754d907da))
+
 ## [0.6.0](https://github.com/terridb/chorequest-frontend/compare/v0.5.0...v0.6.0) (2026-10-22)
 
 
