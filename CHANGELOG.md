@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/terridb/chorequest-frontend/compare/v0.7.0...v0.7.1) (2026-11-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies ([3c205c2](https://github.com/terridb/chorequest-frontend/commit/3c205c2d18d6dcc0b98b32aa6c60395c99ff470b))
+
 ## [0.7.0](https://github.com/terridb/chorequest-frontend/compare/v0.6.0...v0.7.0) (2026-10-24)
 
 
