@@ -9,6 +9,7 @@ import {toLocalDateString} from "../../../utils/date.ts";
 import SegmentedControl from "../../ui/segmented-control/SegmentedControl.tsx";
 import Spinner from "../../ui/spinner/Spinner.tsx";
 import Form from "../../ui/form/Form.tsx";
+import Button from "../../ui/button/Button.tsx";
 import LabeledGroup from "../../ui/labeled-group/LabeledGroup.tsx";
 import RepeatPicker from "../repeat-picker/RepeatPicker.tsx";
 import OptionPicker from "../../ui/option-picker/OptionPicker.tsx";
@@ -62,7 +63,12 @@ function toTaskInput(task: Task): TaskInput {
 }
 
 // Without a task the form creates a new quest, with a task it edits that quest
-function QuestForm({household, task, onSaved}: { household: Household, task?: Task, onSaved: () => void }) {
+function QuestForm({household, task, onSaved, onDelete}: {
+    household: Household,
+    task?: Task,
+    onSaved: () => void,
+    onDelete?: () => void
+}) {
     const {register, control, handleSubmit, setValue, formState: {errors, isValid, isDirty}} = useForm<TaskInput>({
         mode: 'onTouched',
         defaultValues: task ? toTaskInput(task) : emptyTaskInput(household),
@@ -109,6 +115,11 @@ function QuestForm({household, task, onSaved}: { household: Household, task?: Ta
             error={saveTask.isError
                 ? `Something went wrong ${task ? 'saving' : 'posting'} your quest. Please try again.`
                 : undefined}
+            secondaryAction={task && onDelete &&
+                <Button variant='danger-secondary' type='button' size='large' onClick={onDelete}>
+                    Delete quest
+                </Button>
+            }
         >
             <label className='form-label'>
                 Title

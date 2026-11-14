@@ -7,10 +7,11 @@ interface FormProps {
     submitLabel: ReactNode;
     submitDisabled?: boolean;
     error?: string;
+    secondaryAction?: ReactNode;
     children: ReactNode;
 }
 
-function Form({onSubmit, submitLabel, submitDisabled, error, children}: FormProps) {
+function Form({onSubmit, submitLabel, submitDisabled, error, secondaryAction, children}: FormProps) {
     return (
         <form className='form' onSubmit={onSubmit}>
             <div className='form-fields'>
@@ -18,6 +19,7 @@ function Form({onSubmit, submitLabel, submitDisabled, error, children}: FormProp
             </div>
             <div className='action-bar'>
                 {error && <p className='form-error'>{error}</p>}
+                {secondaryAction}
                 <Button variant='primary' type='submit' size='large' disabled={submitDisabled}>
                     {submitLabel}
                 </Button>
