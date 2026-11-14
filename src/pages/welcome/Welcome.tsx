@@ -30,6 +30,9 @@ const exampleQuest: TaskAssignment = {
         avatarUrl: '',
     },
     dueDate: today,
+    status: 'OPEN',
+    skippedAt: null,
+    skippedBy: null,
 };
 
 function Welcome() {

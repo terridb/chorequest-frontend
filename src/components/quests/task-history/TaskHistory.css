@@ -12,3 +12,7 @@
     font-size: 0.75rem;
     color: var(--blue);
 }
+
+.task-history-skipped {
+    color: var(--ink-soft);
+}

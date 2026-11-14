@@ -36,18 +36,21 @@ function TaskHistory({taskId}: { taskId: string }) {
                 </div>
             ) : (
                 <div className='panel'>
-                    {history.map(completion => {
-                        const name = completion.member.user?.firstName ?? 'Former housemate';
+                    {history.map(entry => {
+                        const name = entry.member.user?.firstName ?? 'Former housemate';
+                        const skipped = entry.status === 'SKIPPED';
 
                         return (
                             <SettingRow
-                                key={completion.id}
+                                key={entry.assignmentId}
                                 title={name}
-                                subtitle={formatShortDate(new Date(completion.completedAt))}
-                                icon={<Avatar src={completion.member.user?.avatarUrl} name={name}
-                                              seed={completion.member.id}/>}
+                                subtitle={formatShortDate(new Date(entry.occurredAt))}
+                                icon={<Avatar src={entry.member.user?.avatarUrl} name={name}
+                                              seed={entry.member.id}/>}
                             >
-                                <p className='task-history-points'>+{completion.rewardedPoints}</p>
+                                <p className={`task-history-points${skipped ? ' task-history-skipped' : ''}`}>
+                                    {skipped ? 'Skipped' : `+${entry.rewardedPoints}`}
+                                </p>
                             </SettingRow>
                         );
                     })}
