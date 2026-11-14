@@ -1,3 +1,5 @@
+export type AssignmentStatus = 'OPEN' | 'COMPLETED' | 'SKIPPED';
+
 export type AssignmentStrategy = 'SOLO' | 'ROTATING';
 
 export const ASSIGNMENT_STRATEGIES: AssignmentStrategy[] = ['SOLO', 'ROTATING'];

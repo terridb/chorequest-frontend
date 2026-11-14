@@ -1,4 +1,4 @@
-import type {AssignmentStrategy, Effort, Frequency} from './enums';
+import type {AssignmentStatus, AssignmentStrategy, Effort, Frequency} from './enums';
 import type {SimpleUser} from "./user.ts";
 
 export interface Task {
@@ -20,6 +20,9 @@ export interface TaskAssignment {
     task: Task;
     user: SimpleUser;
     dueDate: string | null;
+    status: AssignmentStatus;
+    skippedAt: string | null;
+    skippedBy: SimpleUser | null;
 }
 
 export interface TaskCompletion {
@@ -30,15 +33,17 @@ export interface TaskCompletion {
     completedBy: SimpleUser;
 }
 
-export interface SimpleTaskCompletion {
-    id: string;
-    completedAt: string;
-    rewardedPoints: number;
+export interface TaskHistoryEntry {
+    assignmentId: string;
+    status: Exclude<AssignmentStatus, 'OPEN'>;
     member: {
         id: string;
         user: SimpleUser | null;
         points: number;
     };
+    rewardedPoints: number;
+    occurredAt: string;
+    dueDate: string | null;
 }
 
 export interface TaskInput {
