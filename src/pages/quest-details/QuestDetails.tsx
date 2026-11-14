@@ -28,11 +28,13 @@ import {useDeleteTask} from "../../hooks/tasks/useDeleteTask.ts";
 import {getErrorMessage} from "../../utils/error.ts";
 import ConfirmSheet from "../../components/ui/confirm-sheet/ConfirmSheet.tsx";
 import TaskHistory from "../../components/quests/task-history/TaskHistory.tsx";
+import {useSkipAssignment} from "../../hooks/tasks/useSkipAssignment.ts";
 
 const STRATEGY_HINTS: Record<AssignmentStrategy, string> = {
     SOLO: 'Single responsible person',
     ROTATING: 'Takes turns',
 };
+type ConfirmAction = 'delete' | 'skip';
 
 function determineMembers(task: Task, household: Household): HouseholdMember[] {
     if (task.strategy === 'SOLO') {
@@ -45,7 +47,7 @@ function QuestDetails() {
     const {id: taskId} = useParams();
     const navigate = useNavigate();
     const [isEditQuestOpen, setEditQuestOpen] = useState(false);
-    const [isDeleteQuestOpen, setDeleteQuestOpen] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
 
     const {data: task, isLoading: isTaskLoading, isError: isTaskError} = useGetTask(taskId);
     const {
@@ -60,6 +62,7 @@ function QuestDetails() {
     } = useGetHousehold(task?.householdId);
     const completeTask = useCompleteTask(task?.householdId);
     const deleteTask = useDeleteTask(task?.householdId);
+    const skipTask = useSkipAssignment(task?.householdId);
 
     const isLoading = isTaskLoading || isAssignmentsLoading || isHouseholdLoading;
     const isError = isTaskError || isAssignmentsError || isHouseholdError;
@@ -106,9 +109,20 @@ function QuestDetails() {
         deleteTask.mutate(task.id, {onSuccess: () => navigate('/quests')});
     }
 
-    const handleCloseDelete = () => {
-        setDeleteQuestOpen(false);
+    const handleSkip = () => {
+        if (skipTask.isPending) return;
+        skipTask.mutate(assignment.id, {onSuccess: () => setConfirmAction(null)});
+    }
+
+    const handleOpenDelete = () => {
+        setEditQuestOpen(false);
+        setConfirmAction('delete');
+    }
+
+    const handleCloseConfirm = () => {
+        setConfirmAction(null);
         deleteTask.reset();
+        skipTask.reset();
     }
 
     return (
@@ -155,11 +169,16 @@ function QuestDetails() {
                 onClose={() => setEditQuestOpen(false)}
                 title='Edit quest'
             >
-                <QuestForm household={household} task={task} onSaved={() => setEditQuestOpen(false)}/>
+                <QuestForm
+                    household={household}
+                    task={task}
+                    onSaved={() => setEditQuestOpen(false)}
+                    onDelete={handleOpenDelete}
+                />
             </BottomSheet>
             <ConfirmSheet
-                open={isDeleteQuestOpen}
-                onClose={handleCloseDelete}
+                open={confirmAction === 'delete'}
+                onClose={handleCloseConfirm}
                 title='Delete quest'
                 message={`${task.title} will be deleted for everyone in your house. This can't be undone.`}
                 confirmLabel='Delete quest'
@@ -170,17 +189,33 @@ function QuestDetails() {
                     ? getErrorMessage(deleteTask.error, "Couldn't delete this quest. Please try again.")
                     : undefined}
             />
+            <ConfirmSheet
+                open={confirmAction === 'skip'}
+                onClose={handleCloseConfirm}
+                title='Skip this time?'
+                message={`No points are rewarded and the next turn goes to ${assignment.user.firstName}`}
+                confirmLabel='Skip'
+                pendingLabel='Skipping...'
+                onConfirm={handleSkip}
+                isPending={skipTask.isPending}
+                error={skipTask.isError
+                    ? getErrorMessage(skipTask.error, "Couldn't skip this quest. Please try again.")
+                    : undefined}
+            />
             <footer className='action-bar quest-details-actions'>
-                <Button
-                    variant='danger-secondary'
-                    type='button'
-                    size='large'
-                    onClick={() => setDeleteQuestOpen(true)}
-                >
-                    Delete quest
-                </Button>
                 {completeTask.isError &&
                     <p className='action-bar-error'>Couldn't complete this quest. Please try again.</p>
+                }
+                {(task.frequency !== 'AS_NEEDED' && task.frequency !== 'ONCE') &&
+                    <Button
+                        variant='danger-secondary'
+                        type='button'
+                        size='large'
+                        onClick={() => setConfirmAction('skip')}
+                        disabled={skipTask.isPending}
+                    >
+                        Skip
+                    </Button>
                 }
                 <Button
                     variant='primary'
