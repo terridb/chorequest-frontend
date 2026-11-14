@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0](https://github.com/terridb/chorequest-frontend/compare/v0.7.1...v0.8.0) (2026-11-14)
+
+
+### Features
+
+* added a delete option to the quest edit form ([2d16df6](https://github.com/terridb/chorequest-frontend/commit/2d16df6dcb173998f29259f0ac2ba3cd83809eff))
+* added a skip button that keeps the same member on the next occurrence and moved delete into the edit form ([b2104d7](https://github.com/terridb/chorequest-frontend/commit/b2104d70bbd35b627bf843220eaf45469c28ac1b))
+
+
+### Bug Fixes
+
+* task history now uses the history endpoint and shows skipped assignments ([403f6cd](https://github.com/terridb/chorequest-frontend/commit/403f6cddea3ff12d2b6a249775f89596ac9d6bee))
+* updated follow-redirects and eslint to pass the npm audit ([a7a8a87](https://github.com/terridb/chorequest-frontend/commit/a7a8a87be0c776a216b8731b68afa16e4509946b))
+
 ## [0.7.1](https://github.com/terridb/chorequest-frontend/compare/v0.7.0...v0.7.1) (2026-11-09)
 
 
