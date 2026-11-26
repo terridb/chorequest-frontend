@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.1](https://github.com/terridb/chorequest-frontend/compare/v0.8.0...v0.8.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **deps:** bump minimatch and typescript-eslint ([98096c8](https://github.com/terridb/chorequest-frontend/commit/98096c86f8d46e265ecb2a3e84af15e3f5444fbf))
+* **deps:** bump minimatch and typescript-eslint ([47ba94c](https://github.com/terridb/chorequest-frontend/commit/47ba94c96e09f413d454191372fa49c3da558a95))
+* **deps:** bump the production group across 1 directory with 4 updates ([cf92d3b](https://github.com/terridb/chorequest-frontend/commit/cf92d3b4aeae31d64540b1c1437ece16c3e66526))
+* **deps:** bump the production group across 1 directory with 4 updates ([4bd4de6](https://github.com/terridb/chorequest-frontend/commit/4bd4de6fca3e8c1b96071218b0f57aaabfa914fd))
+
 ## [0.8.0](https://github.com/terridb/chorequest-frontend/compare/v0.7.1...v0.8.0) (2026-11-14)
 
 
